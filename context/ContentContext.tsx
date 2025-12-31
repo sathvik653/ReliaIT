@@ -29,6 +29,8 @@ export interface SiteContent {
     description1: string;
     description2: string;
     yearsExperience: string;
+    image1: string; // Added
+    image2: string; // Added
   };
   features: {
     items: { title: string; desc: string }[];
@@ -66,7 +68,9 @@ const defaultContent: SiteContent = {
     title: "Your Trusted Technology Partner In Rajahmundry",
     description1: "Mahakali Computer is a leading provider of IT hardware, office stationery, and enterprise networking solutions. With over two decades of experience, we have built a reputation for providing genuine products and unmatched service to corporate and government sectors.",
     description2: "We are proud to be an authorized dealer for global brands like HP, Dell, Lenovo, and Canon. Our deep expertise in banking infrastructure makes us the primary supply partner for major public sector bank branches across the East Godavari region.",
-    yearsExperience: "20+"
+    yearsExperience: "20+",
+    image1: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    image2: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
   },
   features: {
     items: [
@@ -97,7 +101,9 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const saved = localStorage.getItem('mahakali_content');
     if (saved) {
       try {
-        setContent(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Merge with default to ensure new fields (like about images) exist if they weren't in localStorage
+        setContent({ ...defaultContent, ...parsed, about: { ...defaultContent.about, ...parsed.about } });
       } catch (e) {
         console.error("Failed to parse saved content", e);
       }

@@ -17,12 +17,12 @@ export const About: React.FC = () => {
              
              <div className="relative z-10 grid grid-cols-2 gap-4">
                <img 
-                 src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 src={content.about.image1} 
                  className="rounded shadow-lg w-full h-48 md:h-64 object-cover transform translate-y-4 md:translate-y-8" 
                  alt="Business Office"
                />
                <img 
-                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 src={content.about.image2} 
                  className="rounded shadow-lg w-full h-48 md:h-64 object-cover" 
                  alt="Professional Meeting"
                />
