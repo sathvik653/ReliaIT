@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, Loader2 } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
@@ -10,7 +11,7 @@ interface Message {
 export const AIChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Hello! Welcome to ReliaIT Systems. How can I help you with hardware or stationery requirements today?' }
+    { role: 'model', text: 'Hello! Welcome to Mahakali Computer. How can I assist you with your IT or office stationery needs today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,7 @@ export const AIChatBot: React.FC = () => {
          setTimeout(() => {
             setMessages(prev => [...prev, { 
                 role: 'model', 
-                text: "I'm currently in demo mode. We supply Computer Hardware, Office Stationery, and support IT companies and Government departments. Please call us for a quote!" 
+                text: "I'm currently in demo mode. We are Mahakali Computer, specializing in Hardware, Office Stationery, and Banking solutions. Please call us at +91 98765 43210 for a professional quote!" 
             }]);
             setIsLoading(false);
          }, 1000);
@@ -46,22 +47,22 @@ export const AIChatBot: React.FC = () => {
 
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3-flash-preview',
         contents: [
             {
                 role: 'user',
-                parts: [{ text: `You are a helpful sales assistant for ReliaIT Systems. 
-                Business Nature: Supplier of Hardware parts, Office Stationery, Computer Stationery.
-                Target Clients: IT Companies, Educational Institutions, Government Departments, Retail businesses.
-                Goal: Educate clients on services and products so they call and get services. DO NOT try to sell directly online, encourage calling or visiting.
+                parts: [{ text: `You are a helpful sales assistant for Mahakali Computer. 
+                Business Nature: Leading supplier of IT Hardware parts, Office Stationery, and Computer Stationery in Rajahmundry.
+                Target Clients: Union Bank branches, IT Companies, Educational Institutions, Government Departments.
+                Goal: Educate clients on our 20+ years of trust and extensive product range. DO NOT try to sell directly online, encourage calling +91 98765 43210 or visiting our office.
                 
                 Product Range:
-                - Computer Hardware (RAM, SSD, HDD, Processors)
-                - Office Stationery (Files, Paper, Pens)
-                - Computer Stationery (Cartridges, Cables)
-                - Networking Gear
+                - Computer Hardware (Authorized Dell, HP, Lenovo partner)
+                - Office Stationery (Complete corporate supplies)
+                - Computer Stationery (Toners, Cartridges, Cables)
+                - Networking Infrastructure
                 
-                Be polite, professional, and concise.
+                Be polite, professional, and emphasize reliability and genuine products.
                 
                 User Query: ${userMessage}` }]
             }
@@ -73,7 +74,7 @@ export const AIChatBot: React.FC = () => {
       setMessages(prev => [...prev, { role: 'model', text }]);
     } catch (error) {
       console.error("AI Error:", error);
-      setMessages(prev => [...prev, { role: 'model', text: "Sorry, I'm having trouble connecting right now. Please call us directly at +91 98765 43210." }]);
+      setMessages(prev => [...prev, { role: 'model', text: "Sorry, I'm having trouble connecting. Please contact Mahakali Computer directly at +91 98765 43210." }]);
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +86,6 @@ export const AIChatBot: React.FC = () => {
 
   return (
     <>
-      {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center
@@ -95,24 +95,20 @@ export const AIChatBot: React.FC = () => {
         {isOpen ? <X color="white" size={24} /> : <MessageSquare color="white" size={24} />}
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
         <div className="fixed bottom-24 right-6 w-[350px] md:w-[400px] h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300">
-          
-          {/* Header */}
           <div className="bg-brand-900 p-4 text-white flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
               <Bot size={24} />
             </div>
             <div>
-              <h3 className="font-bold">Sales Support</h3>
+              <h3 className="font-bold">Mahakali Support</h3>
               <p className="text-xs text-brand-200 flex items-center gap-1">
-                <span className="w-2 h-2 bg-green-400 rounded-full"></span> Online
+                <span className="w-2 h-2 bg-green-400 rounded-full"></span> Expert Online
               </p>
             </div>
           </div>
 
-          {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -135,7 +131,6 @@ export const AIChatBot: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
           <div className="p-4 bg-white border-t border-gray-100">
             <div className="flex gap-2">
               <input
@@ -143,7 +138,7 @@ export const AIChatBot: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyPress}
-                placeholder="Ask about products..."
+                placeholder="How can we help?"
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-accent-500 text-sm"
               />
               <button 

@@ -80,9 +80,9 @@ export const Header: React.FC = () => {
               <Phone size={14} /> 
               <span>+91 98765 43210</span>
             </a>
-            <a href="mailto:info@reliait.net" className="flex items-center gap-2 hover:text-accent-400 transition-colors">
+            <a href="mailto:info@mahakalicomputer.net" className="flex items-center gap-2 hover:text-accent-400 transition-colors">
               <Mail size={14} /> 
-              <span>info@reliait.net</span>
+              <span>info@mahakalicomputer.net</span>
             </a>
           </div>
           <div className="flex items-center gap-4">

@@ -15,12 +15,12 @@ export const Hero: React.FC = () => {
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-28.png"
-          alt="IT Infrastructure"
+          src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop"
+          alt="Motherboard Circuitry Background"
           className="w-full h-full object-cover"
         />
-        {/* Navy Gradient Overlay - Heavier on mobile for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-900/95 via-brand-900/80 md:via-brand-900/70 to-brand-900/40 md:to-brand-900/30"></div>
+        {/* Navy Gradient Overlay - Darkened for better contrast with the hardware image */}
+        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-950/95 via-brand-900/90 md:via-brand-900/80 to-brand-900/60 md:to-brand-900/40"></div>
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
       </div>
       

@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
               <Logo variant="light" height={32} />
             </div>
             <p className="text-sm leading-relaxed mb-6 text-gray-400">
-              Your trusted B2B partner for comprehensive IT hardware and office supply solutions. Serving Union Bank branches across East Godavari since 2018.
+              Mahakali Computer is your trusted B2B partner for comprehensive IT hardware and office supply solutions. Serving Union Bank branches and corporate offices across East Godavari.
             </p>
             <div className="flex gap-4">
               {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
@@ -77,7 +77,7 @@ export const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-accent-500 flex-shrink-0" />
-                <span>info@reliait.net</span>
+                <span>info@mahakalicomputer.net</span>
               </li>
             </ul>
           </div>
@@ -88,7 +88,7 @@ export const Footer: React.FC = () => {
       <div className="border-t border-brand-800 bg-brand-950">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <div>
-            &copy; {new Date().getFullYear()} ReliaIT. All rights reserved.
+            &copy; {new Date().getFullYear()} Mahakali Computer. All rights reserved.
           </div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

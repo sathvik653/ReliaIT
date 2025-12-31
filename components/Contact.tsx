@@ -58,7 +58,7 @@ export const Contact: React.FC = () => {
                           <div>
                               <h4 className="font-semibold text-base md:text-lg">Support Email</h4>
                               <p className="text-gray-400 text-xs mb-1">Quotes & Tender bids</p>
-                              <a href="mailto:info@reliait.net" className="font-bold hover:text-accent-400 transition-colors break-all text-sm md:text-base">info@reliait.net</a>
+                              <a href="mailto:info@mahakalicomputer.net" className="font-bold hover:text-accent-400 transition-colors break-all text-sm md:text-base">info@mahakalicomputer.net</a>
                           </div>
                       </div>
 
