@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { industries } from '../data';
+import { useContent } from '../context/ContentContext';
 import { Link } from 'react-router-dom';
 
 export const Industries: React.FC = () => {
+  const { content } = useContent();
+
   return (
     <section id="industries" className="py-24 relative bg-brand-900 overflow-hidden">
       <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
@@ -18,7 +20,7 @@ export const Industries: React.FC = () => {
 
         {/* Updated grid to 2x2 format on medium screens and above */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {industries.map((item, idx) => (
+          {content.industries.map((item, idx) => (
             <Link 
               to={`/industry/${item.id}`}
               key={idx} 

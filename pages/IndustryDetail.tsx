@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { industries } from '../data';
+import { useContent } from '../context/ContentContext';
 import { ArrowLeft, Building2, School, Landmark, Store, CheckCircle2 } from 'lucide-react';
 import { Contact } from '../components/Contact';
 
@@ -13,7 +14,8 @@ const iconMap: Record<string, React.ElementType> = {
 
 export const IndustryDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const industry = industries.find(i => i.id === id);
+  const { content } = useContent();
+  const industry = content.industries.find(i => i.id === id);
 
   if (!industry) {
      return (

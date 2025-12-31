@@ -1,12 +1,14 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { products } from '../data';
+import { useContent } from '../context/ContentContext';
 import { ArrowLeft, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { Contact } from '../components/Contact';
 
 export const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const product = products.find(p => p.id === id);
+  const { content } = useContent();
+  const product = content.products.find(p => p.id === id);
 
   if (!product) {
     return (
@@ -63,7 +65,7 @@ export const ProductDetail: React.FC = () => {
                       </div>
                       <div className="p-6 flex-1 bg-white">
                         <ul className="space-y-3">
-                           {section.items.map((item, i) => (
+                           {section.items.map((item: string, i: number) => (
                               <li key={i} className="flex items-start gap-3 text-gray-600 text-sm">
                                  <span className="w-1.5 h-1.5 rounded-full bg-accent-500 mt-2 flex-shrink-0"></span>
                                  <span className="leading-relaxed">{item}</span>

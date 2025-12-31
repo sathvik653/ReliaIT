@@ -1,8 +1,11 @@
 
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 
 export const About: React.FC = () => {
+  const { content } = useContent();
+
   return (
     <section id="about" className="py-16 md:py-24 bg-gray-50 overflow-hidden">
       <div className="container mx-auto px-4">
@@ -26,21 +29,21 @@ export const About: React.FC = () => {
              </div>
              
              <div className="absolute -bottom-4 -left-4 md:bottom-10 md:left-10 bg-white p-4 md:p-6 rounded shadow-xl max-w-[150px] md:max-w-xs z-20">
-                <p className="font-heading font-bold text-2xl md:text-4xl text-brand-600 mb-1">20+</p>
+                <p className="font-heading font-bold text-2xl md:text-4xl text-brand-600 mb-1">{content.about.yearsExperience}</p>
                 <p className="text-gray-600 font-medium text-[10px] md:text-base">Years of Trust & Excellence</p>
              </div>
           </div>
 
           <div className="w-full lg:w-1/2 pt-10 md:pt-0">
             <span className="text-brand-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-2 block">About Mahakali Computer</span>
-            <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-6 leading-tight">Your Trusted Technology Partner <br className="hidden md:block"/>In Rajahmundry</h2>
+            <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-6 leading-tight">{content.about.title}</h2>
             
             <p className="text-gray-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
-              Mahakali Computer is a leading provider of IT hardware, office stationery, and enterprise networking solutions. With over two decades of experience, we have built a reputation for providing genuine products and unmatched service to corporate and government sectors.
+              {content.about.description1}
             </p>
             
             <p className="text-gray-600 mb-8 leading-relaxed text-sm md:text-base">
-              We are proud to be an authorized dealer for global brands like HP, Dell, Lenovo, and Canon. Our deep expertise in banking infrastructure makes us the primary supply partner for major public sector bank branches across the East Godavari region.
+              {content.about.description2}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-8">

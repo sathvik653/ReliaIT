@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 
 export const Hero: React.FC = () => {
+  const { content } = useContent();
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -12,14 +14,14 @@ export const Hero: React.FC = () => {
 
   return (
     <section id="home" className="relative min-h-[90vh] md:h-[85vh] md:min-h-[600px] flex items-center overflow-hidden py-20 md:py-0">
-      {/* Full Background Image - Darker Motherboard/Circuitry for High Contrast */}
+      {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=2070&auto=format&fit=crop"
-          alt="High Contrast Circuitry Background"
+          src={content.hero.backgroundImage}
+          alt="Background"
           className="w-full h-full object-cover"
         />
-        {/* Navy Gradient Overlay - Stronger opacity on the left for text readability */}
+        {/* Navy Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-950 via-brand-950/90 md:via-brand-900/80 to-brand-900/40"></div>
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
       </div>
@@ -32,12 +34,12 @@ export const Hero: React.FC = () => {
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-heading font-bold leading-[1.2] md:leading-[1.1] mb-6 drop-shadow-md">
-            Reliable B2B IT & <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">Banking Solutions</span>
+            {content.hero.titleLine1} <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">{content.hero.titleLine2}</span>
           </h1>
           
           <p className="text-base md:text-xl text-gray-100 mb-8 leading-relaxed max-w-xl font-light border-l-0 md:border-l-4 border-accent-500 pl-0 md:pl-6 mx-auto md:mx-0 drop-shadow-sm">
-            Providing high-performance infrastructure and essential supplies for leading public sector banks in East Godavari.
+            {content.hero.subtitle}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -45,7 +47,7 @@ export const Hero: React.FC = () => {
               onClick={() => scrollToSection('industries')}
               className="px-8 py-4 bg-accent-500 text-white font-bold rounded shadow-lg hover:bg-accent-600 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 w-full sm:w-auto"
             >
-              Explore Solutions
+              {content.hero.buttonText}
               <ArrowRight size={18} />
             </button>
             <button 

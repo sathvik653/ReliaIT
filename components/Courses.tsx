@@ -1,9 +1,12 @@
+
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { products } from '../data';
+import { useContent } from '../context/ContentContext';
 import { Link } from 'react-router-dom';
 
 export const Products: React.FC = () => {
+  const { content } = useContent();
+
   return (
     <section id="products" className="py-24 relative">
       {/* Background with Image and Overlay */}
@@ -30,7 +33,7 @@ export const Products: React.FC = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
+          {content.products.map((product) => (
             <div key={product.id} className="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-premium transition-all duration-500 border border-gray-100">
               <div className="relative h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-brand-900/0 group-hover:bg-brand-900/60 transition-colors z-10 duration-500"></div>

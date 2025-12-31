@@ -2,8 +2,11 @@
 import React from 'react';
 import { Facebook, Instagram, Twitter, Linkedin, MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
 import { Logo } from './Logo';
+import { useContent } from '../context/ContentContext';
 
 export const Footer: React.FC = () => {
+  const { content } = useContent();
+
   return (
     <footer className="bg-brand-900 text-gray-400 font-sans border-t border-brand-800">
       <div className="container mx-auto px-4 py-16">
@@ -18,11 +21,10 @@ export const Footer: React.FC = () => {
               Mahakali Computer is your trusted B2B partner for comprehensive IT hardware and office supply solutions. Serving major bank branches and corporate offices across East Godavari.
             </p>
             <div className="flex gap-4">
-              {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300">
-                  <Icon size={16} />
-                </a>
-              ))}
+              <a href={content.general.facebook} className="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300"><Facebook size={16} /></a>
+              <a href={content.general.twitter} className="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300"><Twitter size={16} /></a>
+              <a href={content.general.linkedin} className="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300"><Linkedin size={16} /></a>
+              <a href={content.general.instagram} className="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300"><Instagram size={16} /></a>
             </div>
           </div>
 
@@ -69,15 +71,15 @@ export const Footer: React.FC = () => {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-accent-500 mt-1 flex-shrink-0" />
-                <span>Main Road, Rajahmundry,<br/>East Godavari District, Andhra Pradesh - 533101</span>
+                <span>{content.general.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-accent-500 flex-shrink-0" />
-                <span>+91 98765 43210</span>
+                <span>{content.general.phone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-accent-500 flex-shrink-0" />
-                <span>info@mahakalicomputer.net</span>
+                <span>{content.general.email}</span>
               </li>
             </ul>
           </div>

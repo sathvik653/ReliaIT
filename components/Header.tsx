@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, ChevronDown, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Menu, X, Phone, Mail, ChevronDown, Facebook, Twitter, Linkedin, Instagram, Lock } from 'lucide-react';
 import { NavItem } from '../types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './Logo';
+import { useContent } from '../context/ContentContext';
 
 const navItems: NavItem[] = [
   { label: 'Home', href: '/' },
@@ -20,6 +21,7 @@ const navItems: NavItem[] = [
 ];
 
 export const Header: React.FC = () => {
+  const { content } = useContent();
   const [isOpen, setIsOpen] = useState(false);
   const [mobileSubMenuOpen, setMobileSubMenuOpen] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -76,26 +78,27 @@ export const Header: React.FC = () => {
       <div className="bg-brand-900 text-white py-2 text-xs md:text-sm hidden md:block border-b border-brand-800">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-6">
-            <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-accent-400 transition-colors">
+            <a href={`tel:${content.general.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 hover:text-accent-400 transition-colors">
               <Phone size={14} /> 
-              <span>+91 98765 43210</span>
+              <span>{content.general.phone}</span>
             </a>
-            <a href="mailto:info@mahakalicomputer.net" className="flex items-center gap-2 hover:text-accent-400 transition-colors">
+            <a href={`mailto:${content.general.email}`} className="flex items-center gap-2 hover:text-accent-400 transition-colors">
               <Mail size={14} /> 
-              <span>info@mahakalicomputer.net</span>
+              <span>{content.general.email}</span>
             </a>
           </div>
           <div className="flex items-center gap-4">
-             <a href="#" className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Facebook size={15}/></a>
-             <a href="#" className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Twitter size={15}/></a>
-             <a href="#" className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Linkedin size={15}/></a>
-             <a href="#" className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Instagram size={15}/></a>
+             <a href={content.general.facebook} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Facebook size={15}/></a>
+             <a href={content.general.twitter} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Twitter size={15}/></a>
+             <a href={content.general.linkedin} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Linkedin size={15}/></a>
+             <a href={content.general.instagram} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Instagram size={15}/></a>
+             <Link to="/login" className="ml-2 hover:text-accent-400" title="Admin Login"><Lock size={12} /></Link>
           </div>
         </div>
       </div>
 
       {/* Main Navigation */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-gray-100 ${scrolled ? 'bg-white shadow-lg py-1' : 'bg-white py-2 shadow-sm'}`}>
+      <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-gray-100 ${scrolled ? 'bg-white shadow-lg py-1 mt-0' : 'bg-white py-2 shadow-sm md:mt-10'}`}>
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             {/* Identity Logo */}
@@ -201,6 +204,11 @@ export const Header: React.FC = () => {
                   )}
                 </div>
               ))}
+              <div className="pt-4 border-t border-gray-100">
+                <Link to="/login" className="flex items-center gap-2 text-brand-500 text-sm font-semibold">
+                  <Lock size={14} /> Admin Login
+                </Link>
+              </div>
             </div>
           </div>
         )}
