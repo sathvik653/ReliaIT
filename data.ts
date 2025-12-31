@@ -1,0 +1,214 @@
+import { Product, Industry, ProductSection } from './types';
+
+export const products: (Product & { features: string[], longDescription: string, sections?: ProductSection[] })[] = [
+  {
+    id: 'enterprise-hardware',
+    title: 'Enterprise Hardware',
+    description: 'Workstations, Servers, and Storage solutions for business continuity.',
+    longDescription: 'Our Enterprise Hardware solutions are designed to meet the rigorous demands of modern businesses. We partner with leading OEMs like HP, Dell, and Lenovo to provide high-performance workstations, scalable servers, and reliable storage systems. Whether you are setting up a data center or upgrading your office fleet, we ensure genuine products with full warranty support.',
+    category: 'Hardware',
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80',
+    features: [
+        'Rack and Tower Servers',
+        'High-Performance Graphic Workstations',
+        'NAS & SAN Storage Solutions',
+        'Business Laptops & Desktops',
+        'Server Racks & Cooling Systems'
+    ]
+  },
+  {
+    id: 'office-stationery',
+    title: 'Supply and Sales of Office Stationery',
+    description: 'We stock a wide variety of stationery items to support every department and function within your organization.',
+    longDescription: 'We stock a wide variety of stationery items to support every department and function within your organization. Ensuring your team has the right tools is essential for productivity and efficiency. Our comprehensive range covers everything from daily writing instruments to essential filing systems and desk accessories.',
+    category: 'Stationery',
+    image: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=800&q=80',
+    features: [],
+    sections: [
+        {
+            title: "Writing instruments",
+            image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+            items: ["Pens", "pencils", "markers", "highlighters"]
+        },
+        {
+            title: "Paper products",
+            image: "https://images.unsplash.com/photo-1583521214690-73421a1829a9?auto=format&fit=crop&w=600&q=80",
+            items: ["A4 sheets", "notebooks", "notepads", "sticky notes & diaries"]
+        },
+        {
+            title: "Filing and organization",
+            image: "https://images.unsplash.com/photo-1595839016160-c3505b82c788?auto=format&fit=crop&w=600&q=80",
+            items: ["Folders", "files", "registers", "envelopes & binders"]
+        },
+        {
+            title: "Office utilities",
+            image: "https://images.unsplash.com/photo-1610459800645-8f6a39434778?auto=format&fit=crop&w=600&q=80",
+            items: ["Staplers", "paper clips", "punching machine", "scissors & glue sticks"]
+        },
+        {
+            title: "Printing supplies",
+            image: "https://images.unsplash.com/photo-1616628188859-7a11abb6fcc9?auto=format&fit=crop&w=600&q=80",
+            items: ["Printer cartridges", "toners", "photo paper"]
+        },
+        {
+            title: "Desk accessories",
+            image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80",
+            items: ["Desk organizers", "calendars", "whiteboards"]
+        }
+    ]
+  },
+  {
+    id: 'printing-supplies',
+    title: 'Supply and Sales of Computer Stationery',
+    description: 'Essential computer stationery for smooth and uninterrupted business operations.',
+    longDescription: 'In today\'s digitally driven business environment, having the right computer stationery is essential to maintain smooth and uninterrupted operations. Our Supply and Sales of Computer Stationery service is tailored to meet the technology-related consumable needs of offices, educational institutions, and commercial setups. We offer a wide range of high-quality products at competitive prices, with reliable delivery and professional service.',
+    category: 'Consumables',
+    image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=800&q=80',
+    features: [],
+    sections: [
+        {
+            title: "Printing and Paper Supplies",
+            image: "https://images.unsplash.com/photo-1606787620819-8bdf0c44c293?auto=format&fit=crop&w=600&q=80",
+            items: [
+                "Continuous computer paper (single/multi-part)",
+                "Dot matrix and inkjet-compatible papers",
+                "Thermal and laser paper rolls",
+                "Pre-printed stationery and customized forms",
+                "A4/A3 copier paper (various GSM options)"
+            ]
+        },
+        {
+            title: "Printer Cartridges and Toners",
+            image: "https://images.unsplash.com/photo-1541625805562-b9b772099301?auto=format&fit=crop&w=600&q=80",
+            items: [
+                "Inkjet cartridges (Canon, HP, Epson, etc.)",
+                "Laser toners (Black and color)",
+                "Dot matrix printer ribbons",
+                "Bulk ink and refill kits"
+            ]
+        },
+        {
+            title: "Storage Media and Accessories",
+            image: "https://images.unsplash.com/photo-1531062235864-5171bf941212?auto=format&fit=crop&w=600&q=80",
+            items: [
+                "USB flash drives and external hard drives",
+                "CD/DVDs and Blu-ray discs",
+                "Writable media and sleeves",
+                "Keyboard covers, mouse pads, and screen cleaning kits"
+            ]
+        }
+    ]
+  },
+  {
+    id: 'network-infrastructure',
+    title: 'Network Infrastructure',
+    description: 'Routers, switches, cabling, and racks for robust connectivity.',
+    longDescription: 'Build a stable and fast network backbone with our networking solutions. We supply enterprise-grade routers, managed switches, and structured cabling products (Cat6/Cat6a). Our team can also assist in selecting the right Wi-Fi access points and firewall appliances to secure your digital environment.',
+    category: 'Networking',
+    image: 'https://images.unsplash.com/photo-1544197150-b99a580bbc7c?auto=format&fit=crop&w=800&q=80',
+    features: [
+        'Managed & Unmanaged Switches',
+        'Wireless Access Points',
+        'Cat6 Cables & Patch Cords',
+        'Network Racks & Cabinets',
+        'Firewall & Security Appliances'
+    ]
+  },
+  {
+    id: 'it-peripherals',
+    title: 'Supply and Sales of IT Stationery',
+    description: 'Complete range of high-quality IT and computer-related accessories and consumables.',
+    longDescription: 'Modern workplaces rely heavily on IT infrastructure, and the right IT stationery is crucial for maintaining efficiency, organization, and seamless digital operations. Our Supply and Sales of IT Stationery service is designed to provide businesses, institutions, and professionals with a complete range of high-quality IT and computer-related accessories and consumables at competitive prices.',
+    category: 'Accessories',
+    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80',
+    features: [],
+    sections: [
+        {
+            title: "Computer Accessories",
+            image: "https://images.unsplash.com/photo-1587829741301-dc798b91a607?auto=format&fit=crop&w=600&q=80",
+            items: [
+                "Keyboards, mice, and mousepads",
+                "Webcams and headsets",
+                "Laptop cooling pads and stands",
+                "Screen cleaners and anti-static kits",
+                "Cable organizers and cord covers"
+            ]
+        }
+    ]
+  },
+  {
+    id: 'pos-solutions',
+    title: 'POS Solutions',
+    description: 'Thermal printers, barcode scanners, and billing rolls for retail.',
+    longDescription: 'Streamline your retail operations with our Point of Sale (POS) hardware. We supply robust thermal receipt printers, high-speed barcode scanners, and cash drawers compatible with major billing software. We also provide high-quality thermal paper rolls in bulk to keep your checkout counters moving.',
+    category: 'Retail',
+    image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c02?auto=format&fit=crop&w=800&q=80',
+    features: [
+        'Thermal Receipt Printers',
+        'Barcode Scanners (1D/2D)',
+        'Label Printers',
+        'Cash Drawers',
+        'Thermal Paper Rolls'
+    ]
+  }
+];
+
+export const industries: (Industry & { features: string[], longDescription: string, image: string })[] = [
+  {
+    id: 'it-corporate',
+    title: "IT & Corporate",
+    iconName: "Building2",
+    description: "Consumables, Storage, Peripherals, and Networking supplies for offices.",
+    longDescription: "We provide a comprehensive range of IT essentials to keep your corporate office running efficiently. From daily consumables like printer cartridges and toners to critical infrastructure components like networking cables and power solutions. We also stock a wide variety of storage devices and ergonomic peripherals to support your workforce.",
+    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-5.png",
+    features: [
+        "Computer Consumables (Toners, Cartridges, Ribbons)",
+        "Storage & Backup (SSD, HDD, USB, SD Cards)",
+        "IT Accessories (Keyboards, Mice, Webcams, Cleaners)",
+        "Networking Supplies (Cables, Routers, Connectors)",
+        "Power Solutions (UPS, Spike Guards, Extension Cords)"
+    ]
+  },
+  {
+    id: 'education',
+    title: "Education",
+    iconName: "School",
+    description: "Complete lab setups and examination stationery for schools.",
+    longDescription: "Educational institutions require durable technology and consistent supplies. We specialize in setting up computer labs for schools and colleges with robust desktops and networking. Additionally, we are a trusted supplier of examination stationery, including answer sheets, files, and administrative paper supplies.",
+    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-24.png",
+    features: [
+        "Computer Lab Desktops (Thin Clients/PCs)",
+        "Projectors & Smart Boards",
+        "Examination Answer Booklets",
+        "Library Management Accessories"
+    ]
+  },
+  {
+    id: 'government',
+    title: "Government",
+    iconName: "Landmark",
+    description: "Tender-compliant supplies for state and central departments.",
+    longDescription: "We are well-versed in Government procurement processes (GeM) and tender requirements. Our team ensures full compliance with specifications, timely delivery, and proper documentation for GST billing. We supply everything from heavy-duty printers for revenue departments to general stationery for administrative blocks.",
+    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-25.png",
+    features: [
+        "GeM Portal Registered Supplier",
+        "Tender-Specific Procurement",
+        "GST Compliant Invoicing",
+        "High-Volume Paper Supply"
+    ]
+  },
+  {
+    id: 'retail-sme',
+    title: "Retail & SME",
+    iconName: "Store",
+    description: "Cost-effective billing solutions and daily consumables.",
+    longDescription: "Small and Medium Enterprises (SMEs) and retail shops need cost-effective yet reliable solutions. We provide affordable billing hardware and day-to-day consumables. Our quick delivery ensures your shop never stops trading due to a lack of paper rolls or a faulty scanner.",
+    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-29.png",
+    features: [
+        "POS Hardware Bundles",
+        "Bill Books & Letterheads",
+        "Barcode Stickers & Ribbons",
+        "CCTV Surveillance Kits"
+    ]
+  },
+];
