@@ -11,7 +11,7 @@ export const About: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-16">
           
-          <div className="w-full lg:w-1/2 relative">
+          <div className="w-100 lg:w-1/2 relative">
              <div className="absolute -top-10 -left-10 w-40 h-40 bg-brand-200/30 rounded-full blur-3xl hidden md:block"></div>
              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-accent-500/10 rounded-full blur-3xl hidden md:block"></div>
              
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
           </div>
 
           <div className="w-full lg:w-1/2 pt-10 md:pt-0">
-            <span className="text-brand-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-2 block">About Mahakali Computer</span>
+            <span className="text-brand-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-2 block">About ReliaIT</span>
             <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-6 leading-tight">{content.about.title}</h2>
             
             <p className="text-gray-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">

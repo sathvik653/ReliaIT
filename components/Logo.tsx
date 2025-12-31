@@ -12,7 +12,7 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'default', className = '',
   // For the 'light' variant (dark background), we switch the dark blue to white.
   const primaryColor = variant === 'light' ? '#FFFFFF' : '#0A1A3A';
   const accentColor = '#C2090D';
-  const clipId = `clip0_mahakali_${variant}`;
+  const clipId = `clip0_reliait_${variant}`;
 
   return (
     <div className={`${className}`} style={{ height: height, display: 'flex', alignItems: 'center' }}>
@@ -21,7 +21,7 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'default', className = '',
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
         style={{ height: '100%', width: 'auto' }}
-        aria-label="Mahakali Computer Logo"
+        aria-label="ReliaIT Logo"
       >
         <g clipPath={`url(#${clipId})`}>
           <path d="M24.5596 37.86H59.2996C59.1196 44.37 56.3896 50.24 56.1296 56.44C57.7596 57.45 59.4696 57.03 61.0896 57.03C77.0896 57.08 93.0896 57.05 109.09 57.09C112.13 57.09 115.07 56.58 117.97 55.82C120.97 55.03 123.52 53.45 125.04 50.65C127.98 45.25 128.96 39.33 128.85 33.31C128.79 29.63 126.04 26.93 122.21 26.22C119.94 25.8 117.57 25.79 115.25 25.78C87.0896 25.67 58.9196 25.6 30.7596 25.51C29.6196 25.51 28.4896 25.51 26.8496 25.51C28.5496 16.88 30.1796 8.64005 31.7496 0.640045C33.1296 -0.249955 34.3196 0.0300449 35.4496 0.0300449C67.4496 0.0100449 99.4396 0.0100449 131.44 -0.00995513C136.81 -0.00995513 142.07 0.770045 147.21 2.25004C157.1 5.09004 163.74 13.06 164.17 23.35C164.71 36.18 162.22 48.67 156.51 60.08C151.1 70.8801 141.07 76.21 129.64 79.08C125.73 80.0601 121.76 80.29 117.11 80.18C131.08 95.67 143.75 111.58 156.9 127.87H113.06C101.39 112.72 89.5196 97.33 77.8396 82.17H51.3496C48.4196 97.47 45.5196 112.62 42.5896 127.97H7.55957C13.2196 97.97 18.8396 68.14 24.5496 37.85L24.5596 37.86Z" fill={primaryColor}/>

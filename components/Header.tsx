@@ -1,24 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Menu, X, Phone, Mail, ChevronDown, Facebook, Twitter, Linkedin, Instagram, Lock } from 'lucide-react';
 import { NavItem } from '../types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './Logo';
 import { useContent } from '../context/ContentContext';
-
-const navItems: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { 
-    label: 'Services', 
-    children: [
-      { label: 'IT Stationery', href: '/product/it-peripherals' },
-      { label: 'Computer Stationery', href: '/product/printing-supplies' },
-      { label: 'Office Stationery', href: '/product/office-stationery' },
-    ]
-  },
-  { label: 'About', href: '/#about' },
-  { label: 'Contact', href: '/#contact' },
-];
 
 export const Header: React.FC = () => {
   const { content } = useContent();
@@ -27,6 +13,20 @@ export const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Synchronize Services menu with Footer "Our Services" links
+  const navItems: NavItem[] = useMemo(() => [
+    { label: 'Home', href: '/' },
+    { 
+      label: 'Services', 
+      children: content.footer.productLinks.map(link => ({
+        label: link.label,
+        href: link.url
+      }))
+    },
+    { label: 'About', href: '/#about' },
+    { label: 'Contact', href: '/#contact' },
+  ], [content.footer.productLinks]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,9 +47,9 @@ export const Header: React.FC = () => {
   const handleNavClick = (e: React.MouseEvent, href?: string) => {
     if (!href) return;
 
-    if (href.startsWith('/#')) {
+    if (href.startsWith('/#') || href.startsWith('#')) {
       e.preventDefault();
-      const targetId = href.replace('/#', '');
+      const targetId = href.replace(/^\/?#/, '');
       
       setIsOpen(false);
 

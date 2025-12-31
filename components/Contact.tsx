@@ -39,7 +39,7 @@ export const Contact: React.FC = () => {
         body: JSON.stringify({
           access_key: ACCESS_KEY,
           subject: `New Quote Request from ${formData.name}`,
-          from_name: "Mahakali Website",
+          from_name: "ReliaIT Website",
           ...formData,
         }),
       });

@@ -5,8 +5,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ContentProvider } from './context/ContentContext';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
-import { ProductDetail } from './pages/ProductDetail';
 import { IndustryDetail } from './pages/IndustryDetail';
+import { ProductDetail } from './pages/ProductDetail';
 import { LoginPage } from './pages/LoginPage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { Footer } from './components/Footer';
@@ -57,8 +57,8 @@ const App: React.FC = () => {
 
                 {/* Public Routes */}
                 <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
-                <Route path="/product/:id" element={<PublicLayout><ProductDetail /></PublicLayout>} />
                 <Route path="/industry/:id" element={<PublicLayout><IndustryDetail /></PublicLayout>} />
+                <Route path="/product/:id" element={<PublicLayout><ProductDetail /></PublicLayout>} />
             </Routes>
           </div>
         </Router>

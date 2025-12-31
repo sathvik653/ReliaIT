@@ -13,14 +13,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem('mahakali_auth');
+    const storedAuth = localStorage.getItem('reliait_auth');
     if (storedAuth === 'true') setIsAuthenticated(true);
   }, []);
 
   const login = (u: string, p: string) => {
     if (u === 'admin' && p === 'admin123') {
       setIsAuthenticated(true);
-      localStorage.setItem('mahakali_auth', 'true');
+      localStorage.setItem('reliait_auth', 'true');
       return true;
     }
     return false;
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem('mahakali_auth');
+    localStorage.removeItem('reliait_auth');
   };
 
   return (

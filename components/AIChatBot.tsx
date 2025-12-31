@@ -11,7 +11,7 @@ interface Message {
 export const AIChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Hello! Welcome to Mahakali Computer. How can I assist you with your IT or office stationery needs today?' }
+    { role: 'model', text: 'Hello! Welcome to ReliaIT. How can I assist you with your IT or office stationery needs today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ export const AIChatBot: React.FC = () => {
          setTimeout(() => {
             setMessages(prev => [...prev, { 
                 role: 'model', 
-                text: "I'm currently in demo mode. We are Mahakali Computer, specializing in Hardware, Office Stationery, and Banking solutions. Please call us at +91 98765 43210 for a professional quote!" 
+                text: "I'm currently in demo mode. We are ReliaIT, specializing in Hardware, Office Stationery, and Banking solutions. Please call us at +91 98765 43210 for a professional quote!" 
             }]);
             setIsLoading(false);
          }, 1000);
@@ -51,7 +51,7 @@ export const AIChatBot: React.FC = () => {
         contents: [
             {
                 role: 'user',
-                parts: [{ text: `You are a helpful sales assistant for Mahakali Computer. 
+                parts: [{ text: `You are a helpful sales assistant for ReliaIT. 
                 Business Nature: Leading supplier of IT Hardware parts, Office Stationery, and Computer Stationery in Rajahmundry.
                 Target Clients: Major Bank branches, IT Companies, Educational Institutions, Government Departments.
                 Goal: Educate clients on our 20+ years of trust and extensive product range. DO NOT try to sell directly online, encourage calling +91 98765 43210 or visiting our office.
@@ -74,7 +74,7 @@ export const AIChatBot: React.FC = () => {
       setMessages(prev => [...prev, { role: 'model', text }]);
     } catch (error) {
       console.error("AI Error:", error);
-      setMessages(prev => [...prev, { role: 'model', text: "Sorry, I'm having trouble connecting. Please contact Mahakali Computer directly at +91 98765 43210." }]);
+      setMessages(prev => [...prev, { role: 'model', text: "Sorry, I'm having trouble connecting. Please contact ReliaIT directly at +91 98765 43210." }]);
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +102,7 @@ export const AIChatBot: React.FC = () => {
               <Bot size={24} />
             </div>
             <div>
-              <h3 className="font-bold">Mahakali Support</h3>
+              <h3 className="font-bold">ReliaIT Support</h3>
               <p className="text-xs text-brand-200 flex items-center gap-1">
                 <span className="w-2 h-2 bg-green-400 rounded-full"></span> Expert Online
               </p>

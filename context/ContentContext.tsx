@@ -1,7 +1,12 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { products as defaultProducts, industries as defaultIndustries } from '../data';
-import { Product, Industry } from '../types';
+import { industries as defaultIndustries, products as defaultProducts } from '../data';
+import { Industry, Product, ProductSection } from '../types';
+
+export interface LinkItem {
+  label: string;
+  url: string;
+}
 
 // Define the shape of our CMS data
 export interface SiteContent {
@@ -29,20 +34,25 @@ export interface SiteContent {
     description1: string;
     description2: string;
     yearsExperience: string;
-    image1: string; // Added
-    image2: string; // Added
+    image1: string; 
+    image2: string; 
   };
   features: {
     items: { title: string; desc: string }[];
   };
-  products: (Product & { features: string[], longDescription: string, sections?: any[] })[];
   industries: (Industry & { features: string[], longDescription: string, image: string })[];
+  products: (Product & { features: string[], longDescription: string, sections?: ProductSection[] })[];
+  footer: {
+    aboutText: string;
+    quickLinks: LinkItem[];
+    productLinks: LinkItem[];
+  };
 }
 
 const defaultContent: SiteContent = {
   general: {
     phone: "+91 98765 43210",
-    email: "info@mahakalicomputer.net",
+    email: "info@reliait.net",
     address: "Main Road, Rajahmundry, East Godavari District, Andhra Pradesh - 533101",
     facebook: "#",
     twitter: "#",
@@ -66,7 +76,7 @@ const defaultContent: SiteContent = {
   },
   about: {
     title: "Your Trusted Technology Partner In Rajahmundry",
-    description1: "Mahakali Computer is a leading provider of IT hardware, office stationery, and enterprise networking solutions. With over two decades of experience, we have built a reputation for providing genuine products and unmatched service to corporate and government sectors.",
+    description1: "ReliaIT is a leading provider of IT hardware, office stationery, and enterprise networking solutions. With over two decades of experience, we have built a reputation for providing genuine products and unmatched service to corporate and government sectors.",
     description2: "We are proud to be an authorized dealer for global brands like HP, Dell, Lenovo, and Canon. Our deep expertise in banking infrastructure makes us the primary supply partner for major public sector bank branches across the East Godavari region.",
     yearsExperience: "20+",
     image1: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
@@ -80,8 +90,23 @@ const defaultContent: SiteContent = {
         { title: "Express Delivery", desc: "Priority shipping for critical infrastructure needs." }
     ]
   },
+  industries: defaultIndustries,
   products: defaultProducts,
-  industries: defaultIndustries
+  footer: {
+    aboutText: "ReliaIT is your trusted B2B partner for comprehensive IT hardware and office supply solutions. Serving major bank branches and corporate offices across East Godavari.",
+    quickLinks: [
+      { label: 'Home', url: '/' },
+      { label: 'About Company', url: '/#about' },
+      { label: 'Industries Served', url: '/#industries' },
+      { label: 'Contact Support', url: '/#contact' },
+      { label: 'Privacy Policy', url: '#' }
+    ],
+    productLinks: [
+       { label: 'IT Stationery', url: '/product/it-peripherals' },
+       { label: 'Computer Stationery', url: '/product/printing-supplies' },
+       { label: 'Office Stationery', url: '/product/office-stationery' }
+    ]
+  }
 };
 
 interface ContentContextType {
@@ -98,12 +123,17 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Load from local storage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('mahakali_content');
+    const saved = localStorage.getItem('reliait_content');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Merge with default to ensure new fields (like about images) exist if they weren't in localStorage
-        setContent({ ...defaultContent, ...parsed, about: { ...defaultContent.about, ...parsed.about } });
+        
+        setContent({ 
+            ...defaultContent, 
+            ...parsed, 
+            about: { ...defaultContent.about, ...parsed.about },
+            footer: { ...defaultContent.footer, ...parsed.footer }
+        });
       } catch (e) {
         console.error("Failed to parse saved content", e);
       }
@@ -113,12 +143,12 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateContent = (newContent: SiteContent) => {
     setContent(newContent);
-    localStorage.setItem('mahakali_content', JSON.stringify(newContent));
+    localStorage.setItem('reliait_content', JSON.stringify(newContent));
   };
 
   const resetContent = () => {
     setContent(defaultContent);
-    localStorage.removeItem('mahakali_content');
+    localStorage.removeItem('reliait_content');
   };
 
   if (!isLoaded) return null; // Prevent flash of default content
