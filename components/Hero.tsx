@@ -11,62 +11,62 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section id="home" className="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-[90vh] md:h-[85vh] md:min-h-[600px] flex items-center overflow-hidden py-20 md:py-0">
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-28.png"
           alt="IT Infrastructure"
           className="w-full h-full object-cover"
         />
-        {/* Navy Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-900/95 via-brand-900/80 to-brand-900/40"></div>
+        {/* Navy Gradient Overlay - Heavier on mobile for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-900/95 via-brand-900/80 md:via-brand-900/70 to-brand-900/40 md:to-brand-900/30"></div>
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
       </div>
       
       {/* Content */}
       <div className="container mx-auto px-4 z-20 relative h-full flex items-center">
-        <div className="w-full lg:w-2/3 pt-16 lg:pt-0 text-white">
-          <div className="inline-block px-4 py-1.5 bg-accent-500 text-white text-xs font-bold tracking-wider uppercase mb-6 rounded shadow-lg transform -skew-x-12">
+        <div className="w-full lg:w-2/3 pt-12 md:pt-16 lg:pt-0 text-white text-center md:text-left">
+          <div className="inline-block px-4 py-1.5 bg-accent-500 text-white text-[10px] md:text-xs font-bold tracking-wider uppercase mb-6 rounded shadow-lg transform -skew-x-12">
             <span className="block transform skew-x-12">Authorized IT Partner Since 2018</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-bold leading-[1.1] mb-6 drop-shadow-md">
-            Reliable B2B IT & <br/>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-heading font-bold leading-[1.2] md:leading-[1.1] mb-6 drop-shadow-md">
+            Reliable B2B IT & <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">Banking Solutions</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl font-light border-l-4 border-accent-500 pl-6">
+          <p className="text-base md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl font-light border-l-0 md:border-l-4 border-accent-500 pl-0 md:pl-6 mx-auto md:mx-0">
             Providing high-performance infrastructure and essential supplies for all Union Bank branches in East Godavari.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <button 
-              onClick={() => scrollToSection('products')}
-              className="px-8 py-4 bg-accent-500 text-white font-bold rounded shadow-lg hover:bg-accent-600 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+              onClick={() => scrollToSection('industries')}
+              className="px-8 py-4 bg-accent-500 text-white font-bold rounded shadow-lg hover:bg-accent-600 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 w-full sm:w-auto"
             >
               Explore Solutions
               <ArrowRight size={18} />
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
-              className="px-8 py-4 bg-white/10 text-white backdrop-blur-md font-semibold rounded shadow-md border border-white/30 hover:bg-white hover:text-brand-900 transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-white/10 text-white backdrop-blur-md font-semibold rounded shadow-md border border-white/30 hover:bg-white hover:text-brand-900 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
             >
               Request Quote
             </button>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm font-medium text-gray-200">
-             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm">
-                <CheckCircle2 size={20} className="text-accent-400" />
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 text-sm font-medium text-gray-200">
+             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left">
+                <CheckCircle2 size={20} className="text-accent-400 flex-shrink-0" />
                 <span>100% Genuine Hardware</span>
              </div>
-             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm">
-                <CheckCircle2 size={20} className="text-accent-400" />
+             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left">
+                <CheckCircle2 size={20} className="text-accent-400 flex-shrink-0" />
                 <span>Union Bank Branch Partner</span>
              </div>
-             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm">
-                <CheckCircle2 size={20} className="text-accent-400" />
+             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left sm:col-span-2 lg:col-span-1">
+                <CheckCircle2 size={20} className="text-accent-400 flex-shrink-0" />
                 <span>Fast Local Logistics</span>
              </div>
           </div>
