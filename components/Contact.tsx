@@ -36,7 +36,7 @@ export const Contact: React.FC = () => {
                   <span className="text-accent-400 font-bold uppercase tracking-widest text-xs mb-2 block">Connect With Us</span>
                   <h3 className="text-2xl md:text-3xl font-heading font-bold mb-6">Let's Discuss Your Needs</h3>
                   <p className="text-gray-300 mb-10 leading-relaxed border-l-2 border-accent-500 pl-4 text-sm md:text-base">
-                      Serving all Union Bank branches in East Godavari. Our dedicated account managers are ready to assist with your B2B requirements.
+                      Serving all major bank branches in East Godavari. Our dedicated account managers are ready to assist with your B2B requirements.
                   </p>
 
                   <div className="space-y-6 md:space-y-8">

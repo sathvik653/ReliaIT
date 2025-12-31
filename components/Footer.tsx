@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
               <Logo variant="light" height={32} />
             </div>
             <p className="text-sm leading-relaxed mb-6 text-gray-400">
-              Mahakali Computer is your trusted B2B partner for comprehensive IT hardware and office supply solutions. Serving Union Bank branches and corporate offices across East Godavari.
+              Mahakali Computer is your trusted B2B partner for comprehensive IT hardware and office supply solutions. Serving major bank branches and corporate offices across East Godavari.
             </p>
             <div className="flex gap-4">
               {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (

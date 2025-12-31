@@ -12,15 +12,15 @@ export const Hero: React.FC = () => {
 
   return (
     <section id="home" className="relative min-h-[90vh] md:h-[85vh] md:min-h-[600px] flex items-center overflow-hidden py-20 md:py-0">
-      {/* Full Background Image */}
+      {/* Full Background Image - Darker Motherboard/Circuitry for High Contrast */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop"
-          alt="Motherboard Circuitry Background"
+          src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=2070&auto=format&fit=crop"
+          alt="High Contrast Circuitry Background"
           className="w-full h-full object-cover"
         />
-        {/* Navy Gradient Overlay - Darkened for better contrast with the hardware image */}
-        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-950/95 via-brand-900/90 md:via-brand-900/80 to-brand-900/60 md:to-brand-900/40"></div>
+        {/* Navy Gradient Overlay - Stronger opacity on the left for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-950 via-brand-950/90 md:via-brand-900/80 to-brand-900/40"></div>
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
       </div>
       
@@ -36,8 +36,8 @@ export const Hero: React.FC = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">Banking Solutions</span>
           </h1>
           
-          <p className="text-base md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl font-light border-l-0 md:border-l-4 border-accent-500 pl-0 md:pl-6 mx-auto md:mx-0">
-            Providing high-performance infrastructure and essential supplies for all Union Bank branches in East Godavari.
+          <p className="text-base md:text-xl text-gray-100 mb-8 leading-relaxed max-w-xl font-light border-l-0 md:border-l-4 border-accent-500 pl-0 md:pl-6 mx-auto md:mx-0 drop-shadow-sm">
+            Providing high-performance infrastructure and essential supplies for leading public sector banks in East Godavari.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -57,15 +57,15 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 text-sm font-medium text-gray-200">
-             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left">
+             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left hover:bg-white/10 transition-colors">
                 <CheckCircle2 size={20} className="text-accent-400 flex-shrink-0" />
                 <span>100% Genuine Hardware</span>
              </div>
-             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left">
+             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left hover:bg-white/10 transition-colors">
                 <CheckCircle2 size={20} className="text-accent-400 flex-shrink-0" />
-                <span>Union Bank Branch Partner</span>
+                <span>Banking Sector Partner</span>
              </div>
-             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left sm:col-span-2 lg:col-span-1">
+             <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/10 backdrop-blur-sm text-left sm:col-span-2 lg:col-span-1 hover:bg-white/10 transition-colors">
                 <CheckCircle2 size={20} className="text-accent-400 flex-shrink-0" />
                 <span>Fast Local Logistics</span>
              </div>

@@ -40,13 +40,13 @@ export const About: React.FC = () => {
             </p>
             
             <p className="text-gray-600 mb-8 leading-relaxed text-sm md:text-base">
-              We are proud to be an authorized dealer for global brands like HP, Dell, Lenovo, and Canon. Our deep expertise in banking infrastructure makes us the primary supply partner for all Union Bank of India branches across the East Godavari region.
+              We are proud to be an authorized dealer for global brands like HP, Dell, Lenovo, and Canon. Our deep expertise in banking infrastructure makes us the primary supply partner for major public sector bank branches across the East Godavari region.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-8">
               {[
                 "Authorized OEM Partner",
-                "Union Bank Trusted Supplier",
+                "Trusted Banking Supplier",
                 "East Godavari Specialist",
                 "GST Compliant Billing",
                 "24/7 Enterprise Support",

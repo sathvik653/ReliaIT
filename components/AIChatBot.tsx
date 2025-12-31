@@ -53,7 +53,7 @@ export const AIChatBot: React.FC = () => {
                 role: 'user',
                 parts: [{ text: `You are a helpful sales assistant for Mahakali Computer. 
                 Business Nature: Leading supplier of IT Hardware parts, Office Stationery, and Computer Stationery in Rajahmundry.
-                Target Clients: Union Bank branches, IT Companies, Educational Institutions, Government Departments.
+                Target Clients: Major Bank branches, IT Companies, Educational Institutions, Government Departments.
                 Goal: Educate clients on our 20+ years of trust and extensive product range. DO NOT try to sell directly online, encourage calling +91 98765 43210 or visiting our office.
                 
                 Product Range:
