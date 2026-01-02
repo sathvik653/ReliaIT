@@ -116,7 +116,7 @@ export const industries: (Industry & { features: string[], longDescription: stri
     iconName: "Building2",
     description: "Consumables, Storage, Peripherals, and Networking supplies for offices.",
     longDescription: "We provide a comprehensive range of IT essentials to keep your corporate office running efficiently. From daily consumables like printer cartridges and toners to critical infrastructure components like networking cables and power solutions. We also stock a wide variety of storage devices and ergonomic peripherals to support your workforce.",
-    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-5.png",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
     features: [
         "Computer Consumables (Toners, Cartridges, Ribbons)",
         "Storage & Backup (SSD, HDD, USB, SD Cards)",
@@ -131,7 +131,7 @@ export const industries: (Industry & { features: string[], longDescription: stri
     iconName: "School",
     description: "Complete lab setups and examination stationery for schools.",
     longDescription: "Educational institutions require durable technology and consistent supplies. We specialize in setting up computer labs for schools and colleges with robust desktops and networking. Additionally, we are a trusted supplier of examination stationery, including answer sheets, files, and administrative paper supplies.",
-    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-24.png",
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80",
     features: [
         "Computer Lab Desktops (Thin Clients/PCs)",
         "Projectors & Smart Boards",
@@ -145,7 +145,7 @@ export const industries: (Industry & { features: string[], longDescription: stri
     iconName: "Landmark",
     description: "Tender-compliant supplies for state and central departments.",
     longDescription: "We are well-versed in Government procurement processes (GeM) and tender requirements. Our team ensures full compliance with specifications, timely delivery, and proper documentation for GST billing. We supply everything from heavy-duty printers for revenue departments to general stationery for administrative blocks.",
-    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-25.png",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
     features: [
         "GeM Portal Registered Supplier",
         "Tender-Specific Procurement",
@@ -159,7 +159,7 @@ export const industries: (Industry & { features: string[], longDescription: stri
     iconName: "Store",
     description: "Cost-effective billing solutions and daily consumables.",
     longDescription: "Small and Medium Enterprises (SMEs) and retail shops need cost-effective yet reliable solutions. We provide affordable billing hardware and day-to-day consumables. Our quick delivery ensures your shop never stops trading due to a lack of paper rolls or a faulty scanner.",
-    image: "https://mahakalicomputer.net/wp-content/uploads/2025/05/Untitled-design-29.png",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800&q=80",
     features: [
         "POS Hardware Bundles",
         "Bill Books & Letterheads",

@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useContent } from '../context/ContentContext';
 import { ArrowLeft, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { Contact } from '../components/Contact';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 export const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,9 +39,7 @@ export const ProductDetail: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col lg:flex-row gap-12">
-          {/* Main Content */}
-          <div className="lg:w-2/3">
+        <div className="max-w-6xl mx-auto">
             <div className="prose max-w-none text-gray-600 leading-relaxed mb-10">
               <p className="text-lg font-medium text-gray-800 mb-6 border-l-4 border-accent-500 pl-4">
                 {product.description}
@@ -53,13 +52,14 @@ export const ProductDetail: React.FC = () => {
                   {product.sections.map((section, idx) => (
                     <div key={idx} className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
                       <div className="h-56 relative overflow-hidden group">
-                         <img 
+                         <OptimizedImage 
                             src={section.image} 
                             alt={section.title} 
+                            containerClass="w-full h-full"
                             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
                          />
-                         <div className="absolute inset-0 bg-gradient-to-t from-brand-900/80 to-transparent opacity-80"></div>
-                         <h3 className="absolute bottom-4 left-4 text-white font-heading font-bold text-lg drop-shadow-md pr-4 leading-tight">
+                         <div className="absolute inset-0 bg-gradient-to-t from-brand-900/80 to-transparent opacity-80 z-10"></div>
+                         <h3 className="absolute bottom-4 left-4 text-white font-heading font-bold text-lg drop-shadow-md pr-4 leading-tight z-20">
                             {section.title}
                          </h3>
                       </div>
@@ -92,30 +92,6 @@ export const ProductDetail: React.FC = () => {
                  </div>
                </div>
             )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:w-1/3">
-             <div className="sticky top-24">
-                <div className="rounded-xl overflow-hidden shadow-2xl mb-8 border-4 border-white">
-                  <img 
-                    src={product.image} 
-                    alt={product.title} 
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-                
-                <div className="bg-brand-50 rounded-xl p-6 border border-brand-100">
-                  <h4 className="font-bold text-brand-900 mb-2">Request Enterprise Quote</h4>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Bulk contracts and high-volume procurement options available for {product.title}.
-                  </p>
-                  <a href="#contact" className="block w-full text-center py-3 bg-accent-500 text-white font-bold rounded hover:bg-accent-600 transition-colors shadow-lg">
-                    Contact Procurement
-                  </a>
-                </div>
-             </div>
-          </div>
         </div>
       </div>
       

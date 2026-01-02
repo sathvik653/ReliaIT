@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useContent } from '../context/ContentContext';
 import { ArrowLeft, Building2, School, Landmark, Store, CheckCircle2 } from 'lucide-react';
 import { Contact } from '../components/Contact';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 const iconMap: Record<string, React.ElementType> = {
   Building2,
@@ -33,10 +34,15 @@ export const IndustryDetail: React.FC = () => {
        {/* Hero for Industry */}
        <div className="relative h-[400px] flex items-center">
           <div className="absolute inset-0 z-0">
-             <img src={industry.image} alt={industry.title} className="w-full h-full object-cover" />
-             <div className="absolute inset-0 bg-brand-900/80 mix-blend-multiply"></div>
+             <OptimizedImage 
+               src={industry.image} 
+               alt={industry.title} 
+               containerClass="w-full h-full"
+               className="w-full h-full object-cover" 
+             />
+             <div className="absolute inset-0 bg-brand-900/80 mix-blend-multiply z-10"></div>
           </div>
-          <div className="container mx-auto px-4 relative z-10 text-white">
+          <div className="container mx-auto px-4 relative z-20 text-white">
              <Link to="/" className="inline-flex items-center text-brand-200 hover:text-white mb-6 text-sm font-medium transition-colors">
                 <ArrowLeft size={16} className="mr-2" /> Back to Home
              </Link>

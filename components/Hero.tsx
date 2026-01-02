@@ -2,6 +2,7 @@
 import React from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
+import { OptimizedImage } from './OptimizedImage';
 
 export const Hero: React.FC = () => {
   const { content } = useContent();
@@ -16,9 +17,10 @@ export const Hero: React.FC = () => {
     <section id="home" className="relative min-h-[90vh] md:h-[85vh] md:min-h-[600px] flex items-center overflow-hidden py-20 md:py-0">
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
-        <img
+        <OptimizedImage
           src={content.hero.backgroundImage}
-          alt="Background"
+          alt="ReliaIT Background"
+          containerClass="w-full h-full"
           className="w-full h-full object-cover"
         />
         {/* Navy Gradient Overlay */}

@@ -3,6 +3,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { Link } from 'react-router-dom';
+import { OptimizedImage } from './OptimizedImage';
 
 export const Industries: React.FC = () => {
   const { content } = useContent();
@@ -24,20 +25,21 @@ export const Industries: React.FC = () => {
             <Link 
               to={`/industry/${item.id}`}
               key={idx} 
-              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-xl border border-white/5 hover:border-accent-500/50 transition-all duration-500"
+              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-xl border border-white/5 hover:border-accent-500/50 transition-all duration-500 block"
             >
               {/* Background Image */}
               <div className="absolute inset-0">
-                <img 
+                <OptimizedImage 
                   src={item.image} 
                   alt={item.title} 
+                  containerClass="w-full h-full"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-transparent opacity-90 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-transparent opacity-90 transition-opacity duration-300 z-10"></div>
               </div>
 
               {/* Content */}
-              <div className="absolute bottom-0 left-0 w-full p-8 flex flex-col justify-end h-full">
+              <div className="absolute bottom-0 left-0 w-full p-8 flex flex-col justify-end h-full z-20">
                 <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                   <div className="h-1.5 w-12 bg-accent-500 mb-6 rounded-full group-hover:w-20 transition-all duration-300"></div>
                   <h3 className="text-2xl font-heading font-bold text-white mb-3">{item.title}</h3>

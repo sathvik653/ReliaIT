@@ -22,7 +22,7 @@ export const AdminDashboard: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/');
   };
 
   const handleNestedChange = (section: keyof SiteContent, field: string, value: string) => {
@@ -248,16 +248,7 @@ export const AdminDashboard: React.FC = () => {
                             className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-accent-500"
                         />
                     </div>
-                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Main Image URL</label>
-                        <input 
-                            type="text" 
-                            value={product.image}
-                            onChange={(e) => updateProductField('image', e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-accent-500"
-                        />
-                        <img src={product.image} className="h-32 w-auto mt-2 rounded border" alt="preview" />
-                    </div>
+                    {/* Main Image URL field removed as requested */}
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Short Description</label>
                         <textarea 
@@ -483,6 +474,16 @@ export const AdminDashboard: React.FC = () => {
                       value={formData.general.phone}
                       onChange={(e) => handleNestedChange('general', 'phone', e.target.value)}
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
+                   />
+                </div>
+                <div>
+                   <label className="block text-sm font-bold text-gray-700 mb-2">WhatsApp Number (with country code, no +)</label>
+                   <input 
+                      type="text" 
+                      value={formData.general.whatsapp}
+                      onChange={(e) => handleNestedChange('general', 'whatsapp', e.target.value)}
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
+                      placeholder="e.g. 919876543210"
                    />
                 </div>
                 <div>

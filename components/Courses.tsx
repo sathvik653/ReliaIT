@@ -3,6 +3,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { Link } from 'react-router-dom';
+import { OptimizedImage } from './OptimizedImage';
 
 export const Products: React.FC = () => {
   const { content } = useContent();
@@ -11,12 +12,13 @@ export const Products: React.FC = () => {
     <section id="products" className="py-24 relative">
       {/* Background with Image and Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
+        <OptimizedImage 
           src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
           alt="Warehouse background"
+          containerClass="w-full h-full"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gray-50/95 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-gray-50/95 backdrop-blur-sm z-10"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -37,9 +39,10 @@ export const Products: React.FC = () => {
             <div key={product.id} className="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-premium transition-all duration-500 border border-gray-100">
               <div className="relative h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-brand-900/0 group-hover:bg-brand-900/60 transition-colors z-10 duration-500"></div>
-                <img 
+                <OptimizedImage 
                   src={product.image} 
-                  alt={product.title} 
+                  alt={product.title}
+                  containerClass="w-full h-full"
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4 z-20">

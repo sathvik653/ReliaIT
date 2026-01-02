@@ -1,13 +1,15 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Menu, X, Phone, Mail, ChevronDown, Facebook, Twitter, Linkedin, Instagram, Lock } from 'lucide-react';
+import { Menu, X, Phone, Mail, ChevronDown, Facebook, Twitter, Linkedin, Instagram, Lock, LogOut } from 'lucide-react';
 import { NavItem } from '../types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './Logo';
 import { useContent } from '../context/ContentContext';
+import { useAuth } from '../context/AuthContext';
 
 export const Header: React.FC = () => {
   const { content } = useContent();
+  const { isAuthenticated, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [mobileSubMenuOpen, setMobileSubMenuOpen] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -72,6 +74,13 @@ export const Header: React.FC = () => {
     }
   };
 
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    logout();
+    navigate('/');
+    setIsOpen(false);
+  };
+
   return (
     <>
       {/* Top Bar */}
@@ -92,7 +101,13 @@ export const Header: React.FC = () => {
              <a href={content.general.twitter} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Twitter size={15}/></a>
              <a href={content.general.linkedin} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Linkedin size={15}/></a>
              <a href={content.general.instagram} className="hover:text-accent-400 transition-transform hover:-translate-y-0.5"><Instagram size={15}/></a>
-             <Link to="/login" className="ml-2 hover:text-accent-400" title="Admin Login"><Lock size={12} /></Link>
+             {isAuthenticated ? (
+               <button onClick={handleLogout} className="ml-2 hover:text-accent-400 flex items-center gap-1" title="Logout">
+                  <LogOut size={12} /> <span className="text-[10px]">Logout</span>
+               </button>
+             ) : (
+               <Link to="/login" className="ml-2 hover:text-accent-400" title="Admin Login"><Lock size={12} /></Link>
+             )}
           </div>
         </div>
       </div>
@@ -205,9 +220,15 @@ export const Header: React.FC = () => {
                 </div>
               ))}
               <div className="pt-4 border-t border-gray-100">
-                <Link to="/login" className="flex items-center gap-2 text-brand-500 text-sm font-semibold">
-                  <Lock size={14} /> Admin Login
-                </Link>
+                {isAuthenticated ? (
+                  <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 text-sm font-semibold w-full text-left">
+                     <LogOut size={14} /> Logout
+                  </button>
+                ) : (
+                  <Link to="/login" className="flex items-center gap-2 text-brand-500 text-sm font-semibold">
+                    <Lock size={14} /> Admin Login
+                  </Link>
+                )}
               </div>
             </div>
           </div>

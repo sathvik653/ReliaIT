@@ -2,6 +2,7 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
+import { OptimizedImage } from './OptimizedImage';
 
 export const About: React.FC = () => {
   const { content } = useContent();
@@ -16,15 +17,17 @@ export const About: React.FC = () => {
              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-accent-500/10 rounded-full blur-3xl hidden md:block"></div>
              
              <div className="relative z-10 grid grid-cols-2 gap-4">
-               <img 
+               <OptimizedImage 
                  src={content.about.image1} 
-                 className="rounded shadow-lg w-full h-48 md:h-64 object-cover transform translate-y-4 md:translate-y-8" 
                  alt="Business Office"
+                 containerClass="rounded shadow-lg w-full h-48 md:h-64 transform translate-y-4 md:translate-y-8"
+                 className="w-full h-full object-cover" 
                />
-               <img 
+               <OptimizedImage 
                  src={content.about.image2} 
-                 className="rounded shadow-lg w-full h-48 md:h-64 object-cover" 
                  alt="Professional Meeting"
+                 containerClass="rounded shadow-lg w-full h-48 md:h-64"
+                 className="w-full h-full object-cover" 
                />
              </div>
              

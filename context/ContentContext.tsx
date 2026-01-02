@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { industries as defaultIndustries, products as defaultProducts } from '../data';
 import { Industry, Product, ProductSection } from '../types';
@@ -18,6 +17,7 @@ export interface SiteContent {
     twitter: string;
     linkedin: string;
     instagram: string;
+    whatsapp: string;
   };
   hero: {
     titleLine1: string;
@@ -57,7 +57,8 @@ const defaultContent: SiteContent = {
     facebook: "#",
     twitter: "#",
     linkedin: "#",
-    instagram: "#"
+    instagram: "#",
+    whatsapp: "919876543210"
   },
   hero: {
     titleLine1: "Reliable B2B IT &",
@@ -131,6 +132,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setContent({ 
             ...defaultContent, 
             ...parsed, 
+            general: { ...defaultContent.general, ...parsed.general }, // Ensure general is merged correctly incase of schema updates
             about: { ...defaultContent.about, ...parsed.about },
             footer: { ...defaultContent.footer, ...parsed.footer }
         });

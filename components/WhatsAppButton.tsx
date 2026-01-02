@@ -1,8 +1,10 @@
 
 import React from 'react';
+import { useContent } from '../context/ContentContext';
 
 export const WhatsAppButton: React.FC = () => {
-  const phoneNumber = '919876543210'; 
+  const { content } = useContent();
+  const phoneNumber = content.general.whatsapp || '919876543210'; 
   const message = 'Hello ReliaIT, I would like to inquire about your IT and stationery services.';
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
