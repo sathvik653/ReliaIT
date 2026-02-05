@@ -6,7 +6,6 @@ import { ContentProvider, useContent } from './context/ContentContext.tsx';
 import { Header } from './components/Header.tsx';
 import { Footer } from './components/Footer.tsx';
 import { WhatsAppButton } from './components/WhatsAppButton.tsx';
-import { AIChatBot } from './components/AIChatBot.tsx';
 import { Loader2, AlertCircle } from 'lucide-react';
 
 // Lazy load pages for performance optimization
@@ -96,7 +95,6 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     <main>{children}</main>
     <Footer />
     <WhatsAppButton />
-    <AIChatBot />
   </>
 );
 
