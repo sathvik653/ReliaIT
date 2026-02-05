@@ -155,3 +155,5 @@ export const AIChatBot: React.FC = () => {
     </>
   );
 };
+
+export default AIChatBot;

@@ -1,23 +1,33 @@
 
-import React, { useState } from 'react';
-import { useContent, SiteContent, LinkItem } from '../context/ContentContext';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from 'react';
+import { useContent, SiteContent, LinkItem } from '../context/ContentContext.tsx';
+import { useAuth } from '../context/AuthContext.tsx';
 import { useNavigate } from 'react-router-dom';
-import { Save, LogOut, Image, Layers, Phone, RotateCcw, Briefcase, List, ChevronDown, PanelBottom, Plus, Trash2, Link as LinkIcon, Type as TypeIcon, Globe, ShoppingBag, LayoutGrid, Settings, Home } from 'lucide-react';
+import { Save, LogOut, Image, Layers, Phone, RotateCcw, Briefcase, List, ChevronDown, PanelBottom, Plus, Trash2, Link as LinkIcon, Type as TypeIcon, Globe, ShoppingBag, LayoutGrid, Settings, Home, Loader2 } from 'lucide-react';
 
 export const AdminDashboard: React.FC = () => {
   const { content, updateContent, resetContent } = useContent();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<SiteContent>(content);
-  // Active tab is now a string to support dynamic product IDs
   const [activeTab, setActiveTab] = useState<string>('general'); 
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
-  const handleSave = () => {
-    updateContent(formData);
-    setSaveStatus('saved');
-    setTimeout(() => setSaveStatus('idle'), 2000);
+  // Sync internal state with content updates
+  useEffect(() => {
+    setFormData(content);
+  }, [content]);
+
+  const handleSave = async () => {
+    setSaveStatus('saving');
+    try {
+      await updateContent(formData);
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 2000);
+    } catch (error) {
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    }
   };
 
   const handleLogout = () => {
@@ -36,8 +46,6 @@ export const AdminDashboard: React.FC = () => {
   };
 
   // --- Footer Link Editor Logic ---
-
-  // Define available options for Quick Links (Sections)
   const sectionOptions = [
     { label: 'SECTION: Home Page (Top)', value: '/' },
     { label: 'SECTION: About Section', value: '/#about' },
@@ -45,13 +53,11 @@ export const AdminDashboard: React.FC = () => {
     { label: 'SECTION: Industries Section', value: '/#industries' },
   ];
 
-  // Define available options for Product Links (Dynamic Pages)
   const productPageOptions = formData.products.map(p => ({
     label: `PAGE: ${p.title}`,
     value: `/product/${p.id}`
   }));
 
-  // Combine for a comprehensive list
   const allPageOptions = [
       ...sectionOptions,
       ...productPageOptions,
@@ -59,7 +65,6 @@ export const AdminDashboard: React.FC = () => {
       { label: 'PAGE: Privacy Policy', value: '#' },
   ];
 
-  // Reusable Link Editor Component
   const renderLinkEditor = (
     title: string, 
     links: LinkItem[], 
@@ -102,7 +107,6 @@ export const AdminDashboard: React.FC = () => {
           {links.length === 0 && <p className="text-sm text-gray-400 italic">No links added yet.</p>}
           
           {links.map((link, idx) => {
-             // Check if current URL is in options or if it's custom
              const isCustom = hasOptions && !options.some(opt => opt.value === link.url) && link.url !== '';
 
              return (
@@ -130,7 +134,7 @@ export const AdminDashboard: React.FC = () => {
                                   value={link.url}
                                   onChange={(e) => {
                                     if(e.target.value === '__custom__') {
-                                        updateLink(idx, 'url', ''); // Reset to empty for custom input
+                                        updateLink(idx, 'url', ''); 
                                     } else {
                                         updateLink(idx, 'url', e.target.value);
                                     }
@@ -190,7 +194,6 @@ export const AdminDashboard: React.FC = () => {
     );
   };
 
-  // --- Product Editor Logic ---
   const renderProductEditor = () => {
     const productId = activeTab.replace('product-', '');
     const productIndex = formData.products.findIndex(p => p.id === productId);
@@ -205,7 +208,6 @@ export const AdminDashboard: React.FC = () => {
         setFormData({ ...formData, products: newProducts });
     };
 
-    // Helper to manage sections inside a product
     const updateSection = (sectionIndex: number, field: string, value: any) => {
         const newProducts = [...formData.products];
         const sections = [...(newProducts[productIndex].sections || [])];
@@ -248,7 +250,6 @@ export const AdminDashboard: React.FC = () => {
                             className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-accent-500"
                         />
                     </div>
-                    {/* Main Image URL field removed as requested */}
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Short Description</label>
                         <textarea 
@@ -322,11 +323,6 @@ export const AdminDashboard: React.FC = () => {
                              </div>
                         </div>
                     ))}
-                    {(product.sections || []).length === 0 && (
-                        <div className="text-center py-10 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
-                            No cards added yet. Click "Add New Card" to begin.
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
@@ -336,87 +332,56 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row font-sans">
-      {/* Sidebar */}
       <aside className="w-full md:w-64 bg-brand-900 text-white flex flex-col fixed md:relative z-20 h-full md:h-auto overflow-y-auto no-scrollbar">
         <div className="p-6 border-b border-brand-800">
           <h2 className="text-xl font-heading font-bold">CMS Admin</h2>
-          <p className="text-xs text-brand-300">ReliaIT</p>
+          <p className="text-xs text-brand-300">ReliaIT (Cloud Sync)</p>
         </div>
         
         <nav className="flex-1 p-4 space-y-6">
-          
-          {/* Group 1: Global Settings */}
           <div>
             <h3 className="text-xs font-bold text-brand-400 uppercase tracking-wider mb-2 px-2">Global Settings</h3>
             <div className="space-y-1">
-              <button 
-                onClick={() => setActiveTab('general')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'general' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('general')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'general' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <Settings size={16} /> General Info
               </button>
-              <button 
-                onClick={() => setActiveTab('footer')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'footer' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('footer')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'footer' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <PanelBottom size={16} /> Footer
               </button>
             </div>
           </div>
 
-          {/* Group 2: Home Page */}
           <div>
             <h3 className="text-xs font-bold text-brand-400 uppercase tracking-wider mb-2 px-2">Home Page</h3>
             <div className="space-y-1">
-              <button 
-                onClick={() => setActiveTab('hero')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'hero' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('hero')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'hero' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <Home size={16} /> Hero Section
               </button>
-              <button 
-                onClick={() => setActiveTab('features')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'features' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('features')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'features' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <List size={16} /> Features
               </button>
-              <button 
-                onClick={() => setActiveTab('industries')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'industries' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('industries')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'industries' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <Briefcase size={16} /> Industries
               </button>
-              <button 
-                onClick={() => setActiveTab('about')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'about' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('about')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'about' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <TypeIcon size={16} /> About
               </button>
-              <button 
-                onClick={() => setActiveTab('stats')}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'stats' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-              >
+              <button onClick={() => setActiveTab('stats')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${activeTab === 'stats' ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                 <Layers size={16} /> Stats
               </button>
             </div>
           </div>
 
-          {/* Group 3: Product Pages */}
           <div>
             <h3 className="text-xs font-bold text-brand-400 uppercase tracking-wider mb-2 px-2">Product Pages</h3>
             <div className="space-y-1">
               {formData.products.map((p) => (
-                <button 
-                  key={p.id}
-                  onClick={() => setActiveTab(`product-${p.id}`)}
-                  className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium text-left truncate ${activeTab === `product-${p.id}` ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}
-                >
+                <button key={p.id} onClick={() => setActiveTab(`product-${p.id}`)} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium text-left truncate ${activeTab === `product-${p.id}` ? 'bg-accent-500 text-white' : 'text-brand-200 hover:bg-brand-800'}`}>
                   <ShoppingBag size={16} className="flex-shrink-0" /> <span className="truncate">{p.title}</span>
                 </button>
               ))}
             </div>
           </div>
-
         </nav>
         
         <div className="p-4 border-t border-brand-800">
@@ -426,7 +391,6 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
            <div>
@@ -436,14 +400,13 @@ export const AdminDashboard: React.FC = () => {
                   : `${activeTab} Settings`
                 }
              </h1>
-             <p className="text-sm text-gray-500">Edit your website content in real-time.</p>
+             <p className="text-sm text-gray-500">Edit your cloud-synced CMS data.</p>
            </div>
            <div className="flex gap-4">
               <button 
-                onClick={() => {
-                   if(confirm('Are you sure? This will reset all content to default.')) {
-                      resetContent();
-                      setFormData(content); // Reset local form too
+                onClick={async () => {
+                   if(confirm('Are you sure? This will reset cloud content to default.')) {
+                      await resetContent();
                       window.location.reload();
                    }
                 }}
@@ -453,73 +416,33 @@ export const AdminDashboard: React.FC = () => {
               </button>
               <button 
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all shadow-md active:scale-95"
+                disabled={saveStatus === 'saving'}
+                className="flex items-center gap-2 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all shadow-md active:scale-95 disabled:opacity-50 min-w-[140px] justify-center"
               >
-                {saveStatus === 'saved' ? 'Saved!' : <><Save size={18} /> Save Changes</>}
+                {saveStatus === 'saving' ? <Loader2 size={18} className="animate-spin" /> : saveStatus === 'saved' ? 'Saved!' : saveStatus === 'error' ? 'Error!' : <><Save size={18} /> Save Changes</>}
               </button>
            </div>
         </header>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8 max-w-5xl">
-           
-           {/* Render Product Editor if tab matches product- ID */}
            {activeTab.startsWith('product-') && renderProductEditor()}
-
            {activeTab === 'general' && (
              <div className="space-y-6">
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Company Phone</label>
-                   <input 
-                      type="text" 
-                      value={formData.general.phone}
-                      onChange={(e) => handleNestedChange('general', 'phone', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
+                   <input type="text" value={formData.general.phone} onChange={(e) => handleNestedChange('general', 'phone', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none" />
                 </div>
                 <div>
-                   <label className="block text-sm font-bold text-gray-700 mb-2">WhatsApp Number (with country code, no +)</label>
-                   <input 
-                      type="text" 
-                      value={formData.general.whatsapp}
-                      onChange={(e) => handleNestedChange('general', 'whatsapp', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                      placeholder="e.g. 919876543210"
-                   />
+                   <label className="block text-sm font-bold text-gray-700 mb-2">WhatsApp Number</label>
+                   <input type="text" value={formData.general.whatsapp} onChange={(e) => handleNestedChange('general', 'whatsapp', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none" placeholder="e.g. 919876543210" />
                 </div>
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Company Email</label>
-                   <input 
-                      type="text" 
-                      value={formData.general.email}
-                      onChange={(e) => handleNestedChange('general', 'email', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
+                   <input type="text" value={formData.general.email} onChange={(e) => handleNestedChange('general', 'email', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none" />
                 </div>
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Address</label>
-                   <textarea 
-                      value={formData.general.address}
-                      onChange={(e) => handleNestedChange('general', 'address', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-24"
-                   />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Facebook URL</label>
-                        <input type="text" value={formData.general.facebook} onChange={(e) => handleNestedChange('general', 'facebook', e.target.value)} className="w-full px-4 py-2 border rounded-lg outline-none" />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Twitter URL</label>
-                        <input type="text" value={formData.general.twitter} onChange={(e) => handleNestedChange('general', 'twitter', e.target.value)} className="w-full px-4 py-2 border rounded-lg outline-none" />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">LinkedIn URL</label>
-                        <input type="text" value={formData.general.linkedin} onChange={(e) => handleNestedChange('general', 'linkedin', e.target.value)} className="w-full px-4 py-2 border rounded-lg outline-none" />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Instagram URL</label>
-                        <input type="text" value={formData.general.instagram} onChange={(e) => handleNestedChange('general', 'instagram', e.target.value)} className="w-full px-4 py-2 border rounded-lg outline-none" />
-                    </div>
+                   <textarea value={formData.general.address} onChange={(e) => handleNestedChange('general', 'address', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-24" />
                 </div>
              </div>
            )}
@@ -528,283 +451,20 @@ export const AdminDashboard: React.FC = () => {
              <div className="space-y-6">
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Title Line 1</label>
-                   <input 
-                      type="text" 
-                      value={formData.hero.titleLine1}
-                      onChange={(e) => handleNestedChange('hero', 'titleLine1', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
+                   <input type="text" value={formData.hero.titleLine1} onChange={(e) => handleNestedChange('hero', 'titleLine1', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none" />
                 </div>
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Title Line 2 (Colored)</label>
-                   <input 
-                      type="text" 
-                      value={formData.hero.titleLine2}
-                      onChange={(e) => handleNestedChange('hero', 'titleLine2', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none text-accent-500 font-bold"
-                   />
+                   <input type="text" value={formData.hero.titleLine2} onChange={(e) => handleNestedChange('hero', 'titleLine2', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none text-accent-500 font-bold" />
                 </div>
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Subtitle</label>
-                   <textarea 
-                      value={formData.hero.subtitle}
-                      onChange={(e) => handleNestedChange('hero', 'subtitle', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-24"
-                   />
+                   <textarea value={formData.hero.subtitle} onChange={(e) => handleNestedChange('hero', 'subtitle', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-24" />
                 </div>
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Background Image URL</label>
-                   <input 
-                      type="text" 
-                      value={formData.hero.backgroundImage}
-                      onChange={(e) => handleNestedChange('hero', 'backgroundImage', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
-                   <div className="mt-2 h-32 w-full bg-gray-100 rounded border overflow-hidden">
-                       <img src={formData.hero.backgroundImage} className="w-full h-full object-cover" alt="Preview" />
-                   </div>
+                   <input type="text" value={formData.hero.backgroundImage} onChange={(e) => handleNestedChange('hero', 'backgroundImage', e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none" />
                 </div>
-                <div>
-                   <label className="block text-sm font-bold text-gray-700 mb-2">Button Text</label>
-                   <input 
-                      type="text" 
-                      value={formData.hero.buttonText}
-                      onChange={(e) => handleNestedChange('hero', 'buttonText', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
-                </div>
-             </div>
-           )}
-
-            {activeTab === 'features' && (
-             <div className="grid grid-cols-1 gap-6">
-                {formData.features.items.map((feature, idx) => (
-                   <div key={idx} className="p-4 border rounded-lg bg-gray-50">
-                      <h3 className="font-bold text-brand-900 mb-4 border-b pb-2">Feature Card {idx + 1}</h3>
-                      <div className="mb-4">
-                         <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
-                         <input 
-                            type="text" 
-                            value={feature.title}
-                            onChange={(e) => {
-                               const newItems = [...formData.features.items];
-                               newItems[idx].title = e.target.value;
-                               setFormData(prev => ({ ...prev, features: { ...prev.features, items: newItems } }));
-                            }}
-                            className="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-accent-500 outline-none"
-                         />
-                      </div>
-                      <div>
-                         <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
-                         <textarea 
-                            rows={3}
-                            value={feature.desc}
-                            onChange={(e) => {
-                               const newItems = [...formData.features.items];
-                               newItems[idx].desc = e.target.value;
-                               setFormData(prev => ({ ...prev, features: { ...prev.features, items: newItems } }));
-                            }}
-                            className="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-accent-500 outline-none resize-none"
-                         />
-                      </div>
-                   </div>
-                ))}
-             </div>
-           )}
-
-           {activeTab === 'about' && (
-             <div className="space-y-6">
-                <div>
-                   <label className="block text-sm font-bold text-gray-700 mb-2">About Heading</label>
-                   <input 
-                      type="text" 
-                      value={formData.about.title}
-                      onChange={(e) => handleNestedChange('about', 'title', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
-                </div>
-                <div>
-                   <label className="block text-sm font-bold text-gray-700 mb-2">Paragraph 1</label>
-                   <textarea 
-                      value={formData.about.description1}
-                      onChange={(e) => handleNestedChange('about', 'description1', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-32"
-                   />
-                </div>
-                <div>
-                   <label className="block text-sm font-bold text-gray-700 mb-2">Paragraph 2</label>
-                   <textarea 
-                      value={formData.about.description2}
-                      onChange={(e) => handleNestedChange('about', 'description2', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-32"
-                   />
-                </div>
-                <div>
-                   <label className="block text-sm font-bold text-gray-700 mb-2">Years Experience</label>
-                   <input 
-                      type="text" 
-                      value={formData.about.yearsExperience}
-                      onChange={(e) => handleNestedChange('about', 'yearsExperience', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none"
-                   />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Left Image URL</label>
-                        <input 
-                            type="text" 
-                            value={formData.about.image1} 
-                            onChange={(e) => handleNestedChange('about', 'image1', e.target.value)} 
-                            className="w-full px-4 py-2 border rounded-lg outline-none" 
-                        />
-                        <img src={formData.about.image1} className="h-24 w-auto mt-2 rounded" alt="prev"/>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Right Image URL</label>
-                        <input 
-                            type="text" 
-                            value={formData.about.image2} 
-                            onChange={(e) => handleNestedChange('about', 'image2', e.target.value)} 
-                            className="w-full px-4 py-2 border rounded-lg outline-none" 
-                        />
-                         <img src={formData.about.image2} className="h-24 w-auto mt-2 rounded" alt="prev"/>
-                    </div>
-                </div>
-             </div>
-           )}
-
-           {activeTab === 'industries' && (
-             <div className="space-y-4">
-                {formData.industries.map((ind, idx) => (
-                   <details key={ind.id} className="bg-white border rounded-lg group open:ring-1 open:ring-accent-500">
-                      <summary className="p-4 cursor-pointer font-bold flex items-center justify-between hover:bg-gray-50 rounded-lg">
-                        <span>{ind.title}</span>
-                        <ChevronDown className="group-open:rotate-180 transition-transform" />
-                      </summary>
-                      <div className="p-6 border-t bg-gray-50/50 space-y-6">
-                         <div>
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
-                            <input 
-                                type="text" 
-                                value={ind.title}
-                                onChange={(e) => {
-                                    const newInd = [...formData.industries];
-                                    newInd[idx].title = e.target.value;
-                                    setFormData({...formData, industries: newInd});
-                                }}
-                                className="w-full px-3 py-2 border rounded" 
-                            />
-                         </div>
-
-                         <div>
-                             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Icon Name (Lucide React)</label>
-                             <input 
-                                type="text"
-                                value={ind.iconName}
-                                onChange={(e) => {
-                                    const newInd = [...formData.industries];
-                                    newInd[idx].iconName = e.target.value;
-                                    setFormData({...formData, industries: newInd});
-                                }}
-                                className="w-full px-3 py-2 border rounded"
-                             />
-                             <span className="text-xs text-gray-400">Available: Building2, School, Landmark, Store</span>
-                         </div>
-                         
-                         <div>
-                             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Short Description</label>
-                             <input 
-                                type="text"
-                                value={ind.description}
-                                onChange={(e) => {
-                                    const newInd = [...formData.industries];
-                                    newInd[idx].description = e.target.value;
-                                    setFormData({...formData, industries: newInd});
-                                }}
-                                className="w-full px-3 py-2 border rounded"
-                             />
-                         </div>
-
-                         <div>
-                             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Long Description</label>
-                             <textarea 
-                                value={ind.longDescription}
-                                onChange={(e) => {
-                                    const newInd = [...formData.industries];
-                                    newInd[idx].longDescription = e.target.value;
-                                    setFormData({...formData, industries: newInd});
-                                }}
-                                rows={4}
-                                className="w-full px-3 py-2 border rounded"
-                             />
-                         </div>
-
-                         <div>
-                             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Image URL</label>
-                             <input 
-                                type="text" 
-                                value={ind.image}
-                                onChange={(e) => {
-                                    const newInd = [...formData.industries];
-                                    newInd[idx].image = e.target.value;
-                                    setFormData({...formData, industries: newInd});
-                                }}
-                                className="w-full px-3 py-2 border rounded" 
-                             />
-                             <img src={ind.image} className="h-16 w-auto mt-2 rounded border" alt="preview" />
-                         </div>
-
-                         <div>
-                             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Features / Services List (One per line)</label>
-                             <textarea 
-                                 value={ind.features.join('\n')}
-                                 onChange={(e) => {
-                                    const newInd = [...formData.industries];
-                                    newInd[idx].features = e.target.value.split('\n');
-                                    setFormData({...formData, industries: newInd});
-                                 }}
-                                 rows={5}
-                                 className="w-full px-3 py-2 border rounded font-mono text-sm"
-                             />
-                         </div>
-                      </div>
-                   </details>
-                ))}
-             </div>
-           )}
-
-           {activeTab === 'stats' && (
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {formData.stats.items.map((stat, idx) => (
-                   <div key={idx} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="mb-2">
-                         <label className="block text-xs font-bold text-gray-500 uppercase">Label {idx + 1}</label>
-                         <input 
-                            type="text" 
-                            value={stat.label}
-                            onChange={(e) => {
-                               const newItems = [...formData.stats.items];
-                               newItems[idx].label = e.target.value;
-                               setFormData(prev => ({ ...prev, stats: { ...prev.stats, items: newItems } }));
-                            }}
-                            className="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-accent-500 outline-none"
-                         />
-                      </div>
-                      <div>
-                         <label className="block text-xs font-bold text-gray-500 uppercase">Value {idx + 1}</label>
-                         <input 
-                            type="text" 
-                            value={stat.value}
-                            onChange={(e) => {
-                               const newItems = [...formData.stats.items];
-                               newItems[idx].value = e.target.value;
-                               setFormData(prev => ({ ...prev, stats: { ...prev.stats, items: newItems } }));
-                            }}
-                            className="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-accent-500 outline-none"
-                         />
-                      </div>
-                   </div>
-                ))}
              </div>
            )}
 
@@ -812,36 +472,12 @@ export const AdminDashboard: React.FC = () => {
              <div className="space-y-6">
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Footer Description</label>
-                   <textarea 
-                      value={formData.footer.aboutText}
-                      onChange={(e) => {
-                          setFormData(prev => ({
-                              ...prev,
-                              footer: { ...prev.footer, aboutText: e.target.value }
-                          }));
-                      }}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-24"
-                   />
+                   <textarea value={formData.footer.aboutText} onChange={(e) => setFormData(prev => ({ ...prev, footer: { ...prev.footer, aboutText: e.target.value } }))} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 outline-none h-24" />
                 </div>
-                
-                {/* Quick Links Editor */}
-                {renderLinkEditor(
-                  "Quick Links (Homepage Sections)",
-                  formData.footer.quickLinks,
-                  (newLinks) => setFormData(prev => ({...prev, footer: {...prev.footer, quickLinks: newLinks}})),
-                  allPageOptions
-                )}
-
-                {/* Services Links Editor */}
-                {renderLinkEditor(
-                  "Services Menu (Footer & Nav)",
-                  formData.footer.productLinks,
-                  (newLinks) => setFormData(prev => ({...prev, footer: {...prev.footer, productLinks: newLinks}})),
-                  allPageOptions // Now includes everything
-                )}
+                {renderLinkEditor("Quick Links (Homepage Sections)", formData.footer.quickLinks, (newLinks) => setFormData(prev => ({...prev, footer: {...prev.footer, quickLinks: newLinks}})), allPageOptions)}
+                {renderLinkEditor("Services Menu (Footer & Nav)", formData.footer.productLinks, (newLinks) => setFormData(prev => ({...prev, footer: {...prev.footer, productLinks: newLinks}})), allPageOptions)}
              </div>
            )}
-
         </div>
       </main>
     </div>

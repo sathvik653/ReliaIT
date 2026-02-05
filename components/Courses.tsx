@@ -52,20 +52,20 @@ export const Products: React.FC = () => {
                 </div>
                 {/* Hover Action */}
                 <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                   <Link to={`/product/${product.id}`} className="px-6 py-3 bg-white text-brand-900 font-bold rounded shadow-xl hover:bg-yellow-400 transition-colors">
+                   <Link to={`/product/${product.id}`} className="px-6 py-3 bg-white text-brand-900 font-bold rounded shadow-xl hover:bg-accent-500 hover:text-white transition-colors">
                       View Details
                    </Link>
                 </div>
               </div>
               
               <div className="p-8">
-                <h3 className="text-xl font-heading font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors">
+                <h3 className="text-xl font-heading font-bold text-gray-900 mb-3 group-hover:text-accent-500 transition-colors">
                   {product.title}
                 </h3>
                 <p className="text-gray-500 mb-4 line-clamp-2">
                   {product.description}
                 </p>
-                <div className="w-12 h-1 bg-gray-100 group-hover:bg-brand-500 transition-colors duration-500"></div>
+                <div className="w-12 h-1 bg-gray-100 group-hover:bg-accent-500 transition-colors duration-500"></div>
               </div>
             </div>
           ))}

@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { Lock } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Lock, ArrowLeft } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -67,6 +67,15 @@ export const LoginPage: React.FC = () => {
         <p className="mt-4 text-center text-xs text-gray-500">
            Default: admin / admin123
         </p>
+
+        <div className="mt-6 pt-6 border-t border-gray-100">
+          <Link 
+            to="/" 
+            className="flex items-center justify-center gap-2 w-full py-3 border border-gray-200 text-gray-600 font-bold rounded-lg hover:bg-gray-50 transition-colors text-sm"
+          >
+            <ArrowLeft size={16} /> Back to Home
+          </Link>
+        </div>
       </div>
     </div>
   );

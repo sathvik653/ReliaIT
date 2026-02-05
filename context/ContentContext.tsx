@@ -1,13 +1,15 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { industries as defaultIndustries, products as defaultProducts } from '../data';
-import { Industry, Product, ProductSection } from '../types';
+import { industries as defaultIndustries, products as defaultProducts } from '../data.ts';
+import { Industry, Product, ProductSection } from '../types.ts';
+import { db } from '../firebase.ts';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export interface LinkItem {
   label: string;
   url: string;
 }
 
-// Define the shape of our CMS data
 export interface SiteContent {
   general: {
     phone: string;
@@ -112,51 +114,87 @@ const defaultContent: SiteContent = {
 
 interface ContentContextType {
   content: SiteContent;
-  updateContent: (newContent: SiteContent) => void;
-  resetContent: () => void;
+  updateContent: (newContent: SiteContent) => Promise<void>;
+  resetContent: () => Promise<void>;
+  isLoading: boolean;
 }
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
 
 export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [content, setContent] = useState<SiteContent>(defaultContent);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load from local storage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('reliait_content');
-    if (saved) {
+    const fetchContent = async () => {
+      let firebaseData = null;
+
       try {
-        const parsed = JSON.parse(saved);
-        
-        setContent({ 
-            ...defaultContent, 
-            ...parsed, 
-            general: { ...defaultContent.general, ...parsed.general }, // Ensure general is merged correctly incase of schema updates
-            about: { ...defaultContent.about, ...parsed.about },
-            footer: { ...defaultContent.footer, ...parsed.footer }
-        });
-      } catch (e) {
-        console.error("Failed to parse saved content", e);
+        // Try Firebase first only if db is available
+        if (db) {
+          const contentDocRef = doc(db, 'site', 'content');
+          const docSnap = await getDoc(contentDocRef);
+          if (docSnap.exists()) {
+            firebaseData = docSnap.data();
+          } else {
+             // If db exists but doc doesn't, we initialize it
+             await setDoc(contentDocRef, defaultContent);
+          }
+        }
+      } catch (error) {
+        console.warn("Firebase unavailable or fetch failed, using local/default:", error);
       }
-    }
-    setIsLoaded(true);
+
+      if (firebaseData) {
+        setContent(firebaseData as SiteContent);
+      } else {
+        // Fallback to local storage or defaults
+        const saved = localStorage.getItem('reliait_content');
+        if (saved) {
+          setContent(JSON.parse(saved));
+        } else {
+          setContent(defaultContent);
+        }
+      }
+      
+      setIsLoading(false);
+    };
+
+    fetchContent();
   }, []);
 
-  const updateContent = (newContent: SiteContent) => {
-    setContent(newContent);
-    localStorage.setItem('reliait_content', JSON.stringify(newContent));
+  const updateContent = async (newContent: SiteContent) => {
+    try {
+      if (db) {
+        const contentDocRef = doc(db, 'site', 'content');
+        await setDoc(contentDocRef, newContent);
+      } else {
+        console.warn("Firebase not available, saving to localStorage only.");
+      }
+      setContent(newContent);
+      localStorage.setItem('reliait_content', JSON.stringify(newContent));
+    } catch (error) {
+      console.error("Failed to update content:", error);
+      throw error;
+    }
   };
 
-  const resetContent = () => {
-    setContent(defaultContent);
-    localStorage.removeItem('reliait_content');
+  const resetContent = async () => {
+    try {
+      if (db) {
+        const contentDocRef = doc(db, 'site', 'content');
+        await setDoc(contentDocRef, defaultContent);
+      }
+      setContent(defaultContent);
+      localStorage.removeItem('reliait_content');
+    } catch (error) {
+      console.error("Failed to reset content:", error);
+      throw error;
+    }
   };
-
-  if (!isLoaded) return null; // Prevent flash of default content
 
   return (
-    <ContentContext.Provider value={{ content, updateContent, resetContent }}>
+    <ContentContext.Provider value={{ content, updateContent, resetContent, isLoading }}>
       {children}
     </ContentContext.Provider>
   );
