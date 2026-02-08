@@ -122,11 +122,15 @@ function sidebarButton(label, tabId, iconFn) {
 
 function renderSidebar() {
   const products = formData.products || [];
-  return `
-  <aside class="w-full md:w-64 bg-brand-900 text-white flex flex-col fixed md:relative z-20 h-full md:h-auto overflow-y-auto no-scrollbar" style="min-height:100vh;">
-    <div class="p-6 border-b border-brand-800">
-      <h2 class="text-xl font-heading font-bold">CMS Admin</h2>
-      <p class="text-xs text-brand-300">ReliaIT (Cloud Sync)</p>
+  const sidebarContent = `
+    <div class="p-6 border-b border-brand-800 flex items-center justify-between">
+      <div>
+        <h2 class="text-xl font-heading font-bold">CMS Admin</h2>
+        <p class="text-xs text-brand-300">ReliaIT (Cloud Sync)</p>
+      </div>
+      <button id="sidebar-close-btn" class="md:hidden p-2 text-brand-200 hover:text-white transition-colors">
+        ${icons.X(24)}
+      </button>
     </div>
     <nav class="flex-1 p-4 space-y-6">
       <!-- Global Settings -->
@@ -160,7 +164,14 @@ function renderSidebar() {
       <button id="logout-btn" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-brand-200 hover:bg-brand-800 transition-colors">
         ${icons.LogOut(18)} Logout
       </button>
-    </div>
+    </div>`;
+
+  return `
+  <!-- Mobile sidebar overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
+  <!-- Sidebar -->
+  <aside id="admin-sidebar" class="w-64 bg-brand-900 text-white flex flex-col fixed z-40 h-full overflow-y-auto no-scrollbar -translate-x-full md:translate-x-0 md:relative md:z-20 transition-transform duration-300" style="min-height:100vh;">
+    ${sidebarContent}
   </aside>`;
 }
 
@@ -410,19 +421,24 @@ function renderDashboard() {
   app.innerHTML = `
   <div class="min-h-screen bg-slate-100 flex flex-col md:flex-row font-sans">
     ${renderSidebar()}
-    <main class="flex-1 p-6 md:p-10 overflow-y-auto md:ml-0">
+    <main class="flex-1 p-4 md:p-10 overflow-y-auto">
       <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 id="tab-title" class="text-2xl font-bold text-gray-800 capitalize">${escapeHTML(getTabTitle(activeTab))}</h1>
-          <p class="text-sm text-gray-500">Edit your cloud-synced CMS data.</p>
+        <div class="flex items-center gap-3">
+          <button id="sidebar-open-btn" class="md:hidden p-2 -ml-2 text-gray-600 hover:text-brand-900 transition-colors">
+            ${icons.Menu(24)}
+          </button>
+          <div>
+            <h1 id="tab-title" class="text-2xl font-bold text-gray-800 capitalize">${escapeHTML(getTabTitle(activeTab))}</h1>
+            <p class="text-sm text-gray-500">Edit your cloud-synced CMS data.</p>
+          </div>
         </div>
-        <div class="flex gap-4">
+        <div class="flex gap-3 w-full md:w-auto">
           <button id="reset-btn"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border border-red-200 text-red-600 hover:bg-red-50 transition-colors">
+            class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 md:px-5 py-2.5 rounded-lg text-sm font-semibold border border-red-200 text-red-600 hover:bg-red-50 transition-colors">
             ${icons.RotateCcw(18)} Reset
           </button>
           <button id="save-btn"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition-colors">
+            class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 md:px-5 py-2.5 rounded-lg text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition-colors">
             ${icons.Save(18)} Save Changes
           </button>
         </div>
@@ -613,7 +629,32 @@ function attachTabContentListeners() {
   // Instead, we set up listeners once on a persistent wrapper. See attachGlobalListeners.
 }
 
+function toggleSidebar(open) {
+  const sidebar = document.getElementById('admin-sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar || !overlay) return;
+  if (open) {
+    sidebar.classList.remove('-translate-x-full');
+    overlay.classList.remove('hidden');
+  } else {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+  }
+}
+
 function attachGlobalListeners() {
+  // Mobile sidebar toggle
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#sidebar-open-btn')) {
+      toggleSidebar(true);
+      return;
+    }
+    if (e.target.closest('#sidebar-close-btn') || e.target.closest('#sidebar-overlay')) {
+      toggleSidebar(false);
+      return;
+    }
+  });
+
   // Sidebar tab switching
   document.addEventListener('click', async (e) => {
     const tabBtn = e.target.closest('[data-tab]');
@@ -623,6 +664,8 @@ function attachGlobalListeners() {
         activeTab = newTab;
         refreshTabContent();
       }
+      // Close sidebar on mobile after tab selection
+      toggleSidebar(false);
       return;
     }
 
