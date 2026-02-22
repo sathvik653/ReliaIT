@@ -212,7 +212,7 @@ function renderStatsSection() {
   `).join('');
 
   return `
-  <section class="py-16 md:py-20 bg-brand-900 text-white relative bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80')">
+  <section class="py-16 md:py-20 bg-brand-900 text-white relative md:bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80')">
     <div class="absolute inset-0 bg-brand-900/90"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-8 text-center md:divide-x md:divide-white/10">
@@ -293,111 +293,9 @@ function renderAboutSection() {
   </section>`;
 }
 
-// ─── Contact Section (exported for reuse) ────────────────────────────────────
+// ─── Contact Section (exported for reuse by product/industry pages) ──────────
 export function renderContactSection(container) {
-  const content = getContent();
-  const general = content.general;
-
-  const html = `
-  <section id="contact" class="py-20 md:py-28 bg-brand-950 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center mb-16">
-        <span class="text-accent-400 font-bold uppercase tracking-widest text-sm mb-2 block">Get In Touch</span>
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-white">Contact Our Team</h2>
-      </div>
-      <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-5">
-          <!-- Left: Contact Info -->
-          <div class="lg:col-span-2 bg-brand-900 p-8 md:p-10 text-white">
-            <h3 class="text-xl font-heading font-bold mb-6">Contact Information</h3>
-            <p class="text-gray-300 text-sm mb-8 leading-relaxed">Reach out for product inquiries, bulk order quotes, or partnership discussions.</p>
-            <div class="space-y-6">
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  ${icons.Phone(18)}
-                </div>
-                <div>
-                  <div class="text-xs uppercase tracking-wider text-gray-400 mb-1">Phone</div>
-                  <a href="tel:${general.phone.replace(/\s/g, '')}" class="text-white hover:text-accent-400 transition-colors font-medium">${general.phone}</a>
-                </div>
-              </div>
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  ${icons.Mail(18)}
-                </div>
-                <div>
-                  <div class="text-xs uppercase tracking-wider text-gray-400 mb-1">Email</div>
-                  <a href="mailto:${general.email}" class="text-white hover:text-accent-400 transition-colors font-medium">${general.email}</a>
-                </div>
-              </div>
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  ${icons.MapPin(18)}
-                </div>
-                <div>
-                  <div class="text-xs uppercase tracking-wider text-gray-400 mb-1">Address</div>
-                  <p class="text-white font-medium leading-relaxed">${general.address}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Right: Form -->
-          <div class="lg:col-span-3 p-8 md:p-10">
-            <form id="contact-form" class="space-y-5">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1.5">Full Name *</label>
-                  <input type="text" id="contact-name" name="name" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm"
-                    placeholder="Your name" />
-                </div>
-                <div>
-                  <label for="contact-org" class="block text-sm font-medium text-gray-700 mb-1.5">Organization</label>
-                  <input type="text" id="contact-org" name="organization"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm"
-                    placeholder="Company name" />
-                </div>
-              </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1.5">Email Address *</label>
-                  <input type="email" id="contact-email" name="email" required
-                    pattern="[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm peer"
-                    placeholder="you@company.com" />
-                  <p class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1">Please enter a valid email address</p>
-                </div>
-                <div>
-                  <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
-                  <input type="tel" id="contact-phone" name="phone"
-                    pattern="[+]?[0-9\\s]{10,15}"
-                    maxlength="15"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm peer"
-                    placeholder="+91 XXXXX XXXXX" />
-                  <p class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1">Please enter a valid phone number (10-15 digits)</p>
-                </div>
-              </div>
-              <div>
-                <label for="contact-message" class="block text-sm font-medium text-gray-700 mb-1.5">Message *</label>
-                <textarea id="contact-message" name="message" required rows="4" minlength="10"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm resize-none peer"
-                  placeholder="Tell us about your requirements..."></textarea>
-                <p class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1">Message must be at least 10 characters</p>
-              </div>
-              <div id="contact-status" class="hidden text-sm font-medium"></div>
-              <button type="submit" id="contact-submit-btn"
-                class="w-full sm:w-auto px-8 py-3.5 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                Send Message ${icons.ArrowRight(16)}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>`;
-
-  container.innerHTML = html;
+  container.innerHTML = renderContactSectionHTML();
   attachAllImages();
   wireContactForm();
 }
@@ -420,6 +318,10 @@ function wireContactForm() {
 
     const submitBtn = document.getElementById('contact-submit-btn');
     const statusEl = document.getElementById('contact-status');
+
+    // Prevent double-submit
+    if (submitBtn.disabled) return;
+    submitBtn.disabled = true;
 
     // Validate fields
     const emailField = document.getElementById('contact-email');
@@ -461,6 +363,7 @@ function wireContactForm() {
     }
 
     if (!valid) {
+      submitBtn.disabled = false;
       statusEl.textContent = 'Please fix the highlighted fields.';
       statusEl.classList.remove('hidden', 'text-green-600');
       statusEl.classList.add('text-red-600');
@@ -484,7 +387,10 @@ function wireContactForm() {
     statusEl.classList.add('hidden');
 
     try {
-      await window.emailjs.send('service_e76uye3', 'template_co7ok5i', templateParams);
+      await Promise.race([
+        window.emailjs.send('service_e76uye3', 'template_co7ok5i', templateParams),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), 15000))
+      ]);
 
       // State: sent
       submitBtn.innerHTML = `${icons.CheckCircle2(18)} Message Sent!`;
@@ -687,13 +593,20 @@ async function init() {
   // Render all home sections
   renderHome(document.getElementById('app'));
 
-  // Handle hash scrolling (e.g. index.html#about)
+  // Handle hash scrolling (e.g. index.html#about) - retry until element exists
   if (window.location.hash) {
     const targetId = window.location.hash.substring(1);
-    setTimeout(() => {
+    let attempts = 0;
+    const tryScroll = () => {
       const el = document.getElementById(targetId);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else if (attempts < 20) {
+        attempts++;
+        requestAnimationFrame(tryScroll);
+      }
+    };
+    requestAnimationFrame(tryScroll);
   }
 }
 

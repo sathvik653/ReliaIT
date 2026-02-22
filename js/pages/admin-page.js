@@ -9,10 +9,16 @@ import { icons } from '../icons.js';
 let formData = null;   // Deep clone of content for editing
 let activeTab = 'general';
 let saveStatus = 'idle'; // idle | saving | saved | error
+let _authUnsubscribe = null;
 
 // ── Helpers ─────────────────────────────────────────────────────────
 function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
+}
+
+function isValidUrl(str) {
+  if (!str || str === '#' || str.startsWith('index.html') || str.startsWith('product.html') || str.startsWith('industry.html') || str.startsWith('login.html')) return true;
+  try { new URL(str); return true; } catch { return false; }
 }
 
 function escapeHTML(str) {
@@ -64,6 +70,23 @@ function getPresetOptions() {
 
 // ── Save / Reset ────────────────────────────────────────────────────
 async function handleSave() {
+  // Validate image URLs before saving
+  const urlFields = [];
+  if (formData.hero && formData.hero.backgroundImage && !isValidUrl(formData.hero.backgroundImage)) urlFields.push('Hero Background Image');
+  if (formData.about) {
+    if (formData.about.image1 && !isValidUrl(formData.about.image1)) urlFields.push('About Image 1');
+    if (formData.about.image2 && !isValidUrl(formData.about.image2)) urlFields.push('About Image 2');
+  }
+  (formData.products || []).forEach(p => {
+    (p.sections || []).forEach(s => {
+      if (s.image && !isValidUrl(s.image)) urlFields.push(`Product "${p.title}" card image`);
+    });
+  });
+  if (urlFields.length > 0) {
+    alert(`Invalid URLs found in: ${urlFields.join(', ')}. Please fix before saving.`);
+    return;
+  }
+
   saveStatus = 'saving';
   updateSaveButton();
   try {
@@ -580,6 +603,7 @@ function handleTabContentClick(e) {
   }
 
   if (action === 'remove-section') {
+    if (!confirm('Remove this card? This cannot be undone until you save.')) return;
     const pIdx = parseInt(actionEl.getAttribute('data-product-index'), 10);
     const sIdx = parseInt(actionEl.getAttribute('data-section-index'), 10);
     if (formData.products && formData.products[pIdx] && formData.products[pIdx].sections) {
@@ -722,8 +746,11 @@ export async function initAdminPage() {
       </div>
     </div>`;
 
+  // Unsubscribe previous auth listener to prevent stacking
+  if (_authUnsubscribe) _authUnsubscribe();
+
   // Wait for Firebase auth state to resolve
-  onAuthChange(async (user) => {
+  _authUnsubscribe = onAuthChange(async (user) => {
     if (!user) {
       window.location.href = 'login.html';
       return;

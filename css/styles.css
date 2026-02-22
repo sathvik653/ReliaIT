@@ -14,7 +14,14 @@
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Form validation: show error message when field has .invalid class */
-.invalid + p { display: block !important; }
+.invalid + p { display: block; }
 
 /* Smooth scroll */
 html { scroll-behavior: smooth; }
+
+/* Keyboard focus styles for accessibility (WCAG AA) */
+*:focus-visible {
+  outline: 2px solid #3562BE;
+  outline-offset: 2px;
+  border-radius: 2px;
+}

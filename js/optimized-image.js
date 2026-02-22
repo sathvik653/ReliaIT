@@ -47,6 +47,13 @@ export function attachAllImages() {
         const shimmer = document.getElementById(img.id + '-shimmer');
         if (shimmer) shimmer.remove();
       };
+      img.onerror = () => {
+        img.classList.remove('opacity-0', 'blur-xl', 'scale-110');
+        img.classList.add('opacity-100', 'blur-0', 'scale-100');
+        img.alt = img.alt || 'Image unavailable';
+        const shimmer = document.getElementById(img.id + '-shimmer');
+        if (shimmer) shimmer.remove();
+      };
     }
   });
 }

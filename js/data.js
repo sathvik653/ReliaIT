@@ -8,7 +8,6 @@ export const products = [
     longDescription: 'Modern workplaces rely heavily on IT infrastructure, and the right IT stationery is crucial for maintaining efficiency, organization, and seamless digital operations. Our Supply and Sales of IT Stationery service is designed to provide businesses, institutions, and professionals with a complete range of high-quality IT and computer-related accessories and consumables at competitive prices.',
     category: 'Accessories',
     image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80',
-    features: [],
     sections: [
       {
         title: "Computer Accessories",
@@ -30,7 +29,6 @@ export const products = [
     longDescription: 'In today\'s digitally driven business environment, having the right computer stationery is essential to maintain smooth and uninterrupted operations. Our Supply and Sales of Computer Stationery service is tailored to meet the technology-related consumable needs of offices, educational institutions, and commercial setups. We offer a wide range of high-quality products at competitive prices, with reliable delivery and professional service.',
     category: 'Consumables',
     image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=800&q=80',
-    features: [],
     sections: [
       {
         title: "Printing and Paper Supplies",
@@ -56,7 +54,6 @@ export const products = [
     longDescription: 'We stock a wide variety of stationery items to support every department and function within your organization. Ensuring your team has the right tools is essential for productivity and efficiency. Our comprehensive range covers everything from daily writing instruments to essential filing systems and desk accessories.',
     category: 'Stationery',
     image: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=800&q=80',
-    features: [],
     sections: [
       { title: "Writing instruments", image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80", items: ["Pens", "pencils", "markers", "highlighters"] },
       { title: "Paper products", image: "https://images.unsplash.com/photo-1583521214690-73421a1829a9?auto=format&fit=crop&w=600&q=80", items: ["A4 sheets", "notebooks", "notepads", "sticky notes & diaries"] },

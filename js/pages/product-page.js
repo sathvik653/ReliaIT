@@ -25,6 +25,26 @@ async function init() {
   const id = params.get('id');
   const product = content.products.find(p => p.id === id);
 
+  // Set dynamic meta tags for SEO
+  if (product) {
+    document.title = `${product.title} | ReliaIT`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', product.description);
+    // Open Graph tags
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (!ogTitle) { ogTitle = document.createElement('meta'); ogTitle.setAttribute('property', 'og:title'); document.head.appendChild(ogTitle); }
+    ogTitle.setAttribute('content', `${product.title} | ReliaIT`);
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (!ogDesc) { ogDesc = document.createElement('meta'); ogDesc.setAttribute('property', 'og:description'); document.head.appendChild(ogDesc); }
+    ogDesc.setAttribute('content', product.description);
+    let ogImage = document.querySelector('meta[property="og:image"]');
+    if (!ogImage) { ogImage = document.createElement('meta'); ogImage.setAttribute('property', 'og:image'); document.head.appendChild(ogImage); }
+    ogImage.setAttribute('content', product.image);
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) { ogUrl = document.createElement('meta'); ogUrl.setAttribute('property', 'og:url'); document.head.appendChild(ogUrl); }
+    ogUrl.setAttribute('content', window.location.href);
+  }
+
   if (!product) {
     document.getElementById('app').innerHTML = `
       <div class="min-h-[60vh] flex flex-col items-center justify-center">

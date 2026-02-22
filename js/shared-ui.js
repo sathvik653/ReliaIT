@@ -93,10 +93,10 @@ export function renderHeader() {
             </a>
           </div>
           <div class="flex items-center gap-4">
-            <a href="${content.general.facebook || '#'}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5">${icons.Facebook(15)}</a>
-            <a href="${content.general.twitter || '#'}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5">${icons.Twitter(15)}</a>
-            <a href="${content.general.linkedin || '#'}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5">${icons.Linkedin(15)}</a>
-            <a href="${content.general.instagram || '#'}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5">${icons.Instagram(15)}</a>
+            ${content.general.facebook && content.general.facebook !== '#' ? `<a href="${content.general.facebook}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5" aria-label="Facebook">${icons.Facebook(15)}</a>` : ''}
+            ${content.general.twitter && content.general.twitter !== '#' ? `<a href="${content.general.twitter}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5" aria-label="Twitter">${icons.Twitter(15)}</a>` : ''}
+            ${content.general.linkedin && content.general.linkedin !== '#' ? `<a href="${content.general.linkedin}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5" aria-label="LinkedIn">${icons.Linkedin(15)}</a>` : ''}
+            ${content.general.instagram && content.general.instagram !== '#' ? `<a href="${content.general.instagram}" class="hover:text-accent-400 transition-transform hover:-translate-y-0.5" aria-label="Instagram">${icons.Instagram(15)}</a>` : ''}
             ${authenticated
               ? `<button id="topbar-logout-btn" class="ml-2 hover:text-accent-400 flex items-center gap-1" title="Logout">
                    ${icons.LogOut(12)} <span class="text-[10px]">Logout</span>
@@ -194,6 +194,7 @@ export function renderHeader() {
        </a>`;
 
   header.innerHTML = `
+    <a href="#app" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-brand-900 focus:text-white focus:rounded focus:text-sm focus:font-bold">Skip to content</a>
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center">
         <!-- Logo -->
@@ -227,26 +228,62 @@ export function renderHeader() {
 
   // ---- Attach Event Listeners ----
 
-  // 1. Scroll detection: shadow + padding changes
+  // 1. Scroll detection: shadow + padding changes (throttled)
+  let _scrollTicking = false;
   const onScroll = () => {
-    const scrolled = window.scrollY > 40;
-    if (scrolled) {
-      header.classList.remove('py-2', 'shadow-sm', 'md:mt-10');
-      header.classList.add('py-1', 'shadow-lg', 'mt-0');
-    } else {
-      header.classList.remove('py-1', 'shadow-lg', 'mt-0');
-      header.classList.add('py-2', 'shadow-sm', 'md:mt-10');
-    }
+    if (_scrollTicking) return;
+    _scrollTicking = true;
+    requestAnimationFrame(() => {
+      const scrolled = window.scrollY > 40;
+      if (scrolled) {
+        header.classList.remove('py-2', 'shadow-sm', 'md:mt-10');
+        header.classList.add('py-1', 'shadow-lg', 'mt-0');
+      } else {
+        header.classList.remove('py-1', 'shadow-lg', 'mt-0');
+        header.classList.add('py-2', 'shadow-sm', 'md:mt-10');
+      }
+      _scrollTicking = false;
+    });
   };
-  window.addEventListener('scroll', onScroll);
+  window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // run once on init
 
-  // 2. Desktop dropdown hover (mouseenter / mouseleave)
+  // 2. Desktop dropdown hover/touch (mouseenter / mouseleave / click)
   const dropdownParents = header.querySelectorAll('.nav-dropdown-parent');
   dropdownParents.forEach(parent => {
     const dropdown = parent.querySelector('.nav-dropdown');
     const chevron = parent.querySelector('.chevron-icon');
     if (!dropdown) return;
+
+    // Touch support: toggle on click for tablets in desktop mode
+    const toggleBtn = parent.querySelector('button');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', (e) => {
+        const isVisible = dropdown.classList.contains('opacity-100');
+        // Close all other dropdowns first
+        dropdownParents.forEach(p => {
+          const d = p.querySelector('.nav-dropdown');
+          const c = p.querySelector('.chevron-icon');
+          if (d && d !== dropdown) {
+            d.classList.add('opacity-0', 'invisible', 'translate-y-2');
+            d.classList.remove('opacity-100', 'visible', 'translate-y-0');
+            d.style.pointerEvents = 'none';
+            if (c) c.classList.remove('rotate-180');
+          }
+        });
+        if (isVisible) {
+          dropdown.classList.add('opacity-0', 'invisible', 'translate-y-2');
+          dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
+          dropdown.style.pointerEvents = 'none';
+          if (chevron) chevron.classList.remove('rotate-180');
+        } else {
+          dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+          dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
+          dropdown.style.pointerEvents = 'auto';
+          if (chevron) chevron.classList.add('rotate-180');
+        }
+      });
+    }
 
     parent.addEventListener('mouseenter', () => {
       dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-2');
@@ -375,10 +412,10 @@ export function renderFooter() {
               ${content.footer.aboutText || ''}
             </p>
             <div class="flex gap-4">
-              <a href="${content.general.facebook || '#'}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300">${icons.Facebook(16)}</a>
-              <a href="${content.general.twitter || '#'}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300">${icons.Twitter(16)}</a>
-              <a href="${content.general.linkedin || '#'}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300">${icons.Linkedin(16)}</a>
-              <a href="${content.general.instagram || '#'}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-all duration-300">${icons.Instagram(16)}</a>
+              ${content.general.facebook && content.general.facebook !== '#' ? `<a href="${content.general.facebook}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-colors duration-300" aria-label="Facebook">${icons.Facebook(16)}</a>` : ''}
+              ${content.general.twitter && content.general.twitter !== '#' ? `<a href="${content.general.twitter}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-colors duration-300" aria-label="Twitter">${icons.Twitter(16)}</a>` : ''}
+              ${content.general.linkedin && content.general.linkedin !== '#' ? `<a href="${content.general.linkedin}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-colors duration-300" aria-label="LinkedIn">${icons.Linkedin(16)}</a>` : ''}
+              ${content.general.instagram && content.general.instagram !== '#' ? `<a href="${content.general.instagram}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-colors duration-300" aria-label="Instagram">${icons.Instagram(16)}</a>` : ''}
             </div>
           </div>
 
@@ -436,8 +473,7 @@ export function renderFooter() {
             &copy; ${currentYear} ReliaIT. All rights reserved.
           </div>
           <div class="flex gap-6">
-            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <span class="text-gray-600">Serving East Godavari with pride.</span>
           </div>
         </div>
       </div>
@@ -468,7 +504,7 @@ export function renderWhatsAppButton() {
 
   container.innerHTML = `
     <a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer"
-       class="fixed bottom-6 right-6 md:right-24 z-50 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] group"
+       class="fixed bottom-6 right-6 md:right-24 z-50 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-whatsapp-500 text-white rounded-full shadow-2xl transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] group"
        aria-label="Contact us on WhatsApp">
       <div class="absolute -top-12 right-0 bg-white text-gray-800 text-xs font-bold py-2 px-4 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none border border-gray-100">
         Chat with us!
