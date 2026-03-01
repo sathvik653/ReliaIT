@@ -416,6 +416,116 @@ function wireContactForm() {
   });
 }
 
+// ─── Testimonials Section ────────────────────────────────────────────────────
+function renderTestimonialsSection() {
+  const testimonials = [
+    {
+      name: "Ramesh Babu Kothapalli",
+      role: "Branch Manager",
+      org: "State Bank of India, Rajahmundry",
+      text: "We have been procuring all our IT consumables from ReliaIT for the past 3 years. Toner delivery is always on time, even on urgent basis. Very reliable and the billing is always GST compliant. Best vendor we have worked with in East Godavari.",
+      rating: 5,
+      initials: "RK"
+    },
+    {
+      name: "P. Lakshmi Narasimha Rao",
+      role: "Principal",
+      org: "Sri Venkateswara EM High School, Kakinada",
+      text: "They set up our entire computer lab with 30 desktops, networking, and projectors. The quality of hardware is genuine and they even helped us with AMC. Our students are very happy with the new lab. Thank you ReliaIT team!",
+      rating: 5,
+      initials: "PLR"
+    },
+    {
+      name: "K. Suresh Kumar",
+      role: "District Procurement Officer",
+      org: "Revenue Department, East Godavari",
+      text: "ReliaIT is our go-to GeM registered supplier for all office stationery and computer peripherals. Their tender documentation is always perfect and delivery happens well before the deadline. Very professional team.",
+      rating: 5,
+      initials: "KS"
+    },
+    {
+      name: "Srinivasa Rao Mandava",
+      role: "Owner",
+      org: "Mandava Enterprises, Rajahmundry",
+      text: "I was struggling to find a reliable supplier for POS machines and billing rolls for my 3 retail shops. ReliaIT not only supplied everything but also helped with installation. Their rates are very competitive compared to Hyderabad dealers.",
+      rating: 5,
+      initials: "SM"
+    },
+    {
+      name: "Dr. Vijaya Kumari B.",
+      role: "Administrative Officer",
+      org: "Andhra Bank (Now Union Bank), Amalapuram",
+      text: "From printer cartridges to complete desktop setups, ReliaIT handles all our IT needs. What I appreciate most is their same-day delivery within East Godavari. No other vendor gives this kind of service in our area.",
+      rating: 4,
+      initials: "VK"
+    },
+    {
+      name: "Mohammed Irfan",
+      role: "IT Coordinator",
+      org: "Govt. Degree College, Rajamahendravaram",
+      text: "We ordered bulk computer stationery for our semester exams — answer booklets, continuous paper, and printer ribbons. Everything was delivered in 2 days flat. Quality was excellent and rates were within our budget. Highly recommended!",
+      rating: 5,
+      initials: "MI"
+    }
+  ];
+
+  const stars = (count) => Array.from({ length: 5 }, (_, i) =>
+    i < count
+      ? icons.Star(14, 'text-yellow-400')
+      : icons.Star(14, 'text-gray-300')
+  ).join('');
+
+  // Show 3 cards on desktop, scrollable on mobile
+  const cards = testimonials.map(t => `
+    <div class="bg-white rounded-xl p-6 md:p-8 shadow-md border border-gray-100 flex flex-col min-w-[300px] md:min-w-0">
+      <div class="flex items-center gap-1 mb-4">${stars(t.rating)}</div>
+      <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-1 italic">"${escapeHTML(t.text)}"</p>
+      <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+        <div class="w-11 h-11 rounded-full bg-brand-900 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">${t.initials}</div>
+        <div>
+          <div class="font-bold text-gray-900 text-sm">${escapeHTML(t.name)}</div>
+          <div class="text-xs text-gray-500">${escapeHTML(t.role)}</div>
+          <div class="text-xs text-brand-600 font-medium">${escapeHTML(t.org)}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+  <section class="py-20 md:py-28 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-14">
+        <span class="text-brand-600 font-bold uppercase tracking-widest text-sm mb-2 block">What Our Clients Say</span>
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-900">Trusted Across East Godavari</h2>
+        <p class="text-gray-500 mt-3 max-w-2xl mx-auto text-sm">From bank branches to schools, government offices to retail shops — here's what our valued partners say about working with ReliaIT.</p>
+      </div>
+      <!-- Mobile: horizontal scroll / Desktop: grid -->
+      <div class="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar">
+        ${cards}
+      </div>
+      <!-- Trust badges -->
+      <div class="mt-12 flex flex-wrap justify-center gap-6 md:gap-10 text-sm text-gray-400">
+        <div class="flex items-center gap-2">
+          ${icons.ShieldCheck(18, 'text-brand-600')}
+          <span>GeM Registered</span>
+        </div>
+        <div class="flex items-center gap-2">
+          ${icons.CheckCircle2(18, 'text-brand-600')}
+          <span>ISO Compliant Billing</span>
+        </div>
+        <div class="flex items-center gap-2">
+          ${icons.Truck(18, 'text-brand-600')}
+          <span>Same-Day Delivery</span>
+        </div>
+        <div class="flex items-center gap-2">
+          ${icons.Building2(18, 'text-brand-600')}
+          <span>200+ Corporate Clients</span>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
 // ─── Main Page Renderer ──────────────────────────────────────────────────────
 export function renderHome(container) {
   // Build full page HTML from all sections
@@ -426,6 +536,7 @@ export function renderHome(container) {
     renderIndustriesSection(),
     renderStatsSection(),
     renderAboutSection(),
+    renderTestimonialsSection(),
     // Contact section HTML is inlined here (not using renderContactSection to avoid double-setting innerHTML)
     renderContactSectionHTML(),
   ].join('');
