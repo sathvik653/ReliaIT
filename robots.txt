@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /login.html
 Disallow: /admin.html
-Sitemap: https://reliait.net/sitemap.xml
+Sitemap: https://reliaitinfo.in/sitemap.xml

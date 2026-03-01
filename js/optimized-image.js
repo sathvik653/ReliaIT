@@ -13,13 +13,22 @@ function revealImage(img) {
 export function optimizedImage(src, alt, imgClass = '', containerClass = '', { eager = false } = {}) {
   const id = 'oimg-' + (++_imgCounter);
   const loadAttr = eager ? 'eager' : 'lazy';
+  const fetchPri = eager ? ' fetchpriority="high"' : '';
+  // Eager images (hero) skip blur animation for faster LCP
+  const initialClasses = eager
+    ? `opacity-100 ${imgClass}`
+    : `transition-all duration-700 ease-in-out opacity-0 blur-xl scale-110 ${imgClass}`;
+  const shimmer = eager
+    ? ''
+    : `<div id="${id}-shimmer" class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" style="background-size: 200% 100%;"></div>`;
   return {
     html: `<div class="relative overflow-hidden bg-gray-200 ${containerClass}">
-      <img id="${id}" src="${src}" alt="${alt}" loading="${loadAttr}" decoding="async"
-        class="transition-all duration-700 ease-in-out opacity-0 blur-xl scale-110 ${imgClass}" />
-      <div id="${id}-shimmer" class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" style="background-size: 200% 100%;"></div>
+      <img id="${id}" src="${src}" alt="${alt}" loading="${loadAttr}" decoding="${eager ? 'sync' : 'async'}"${fetchPri}
+        class="${initialClasses}" />
+      ${shimmer}
     </div>`,
     attach() {
+      if (eager) return; // Eager images already visible, no handler needed
       const img = document.getElementById(id);
       if (!img) return;
       if (img.complete) {

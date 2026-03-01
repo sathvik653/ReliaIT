@@ -1,5 +1,5 @@
 // Home page renderer - all sections: Hero, Features, Products, Industries, Stats, About, Contact
-import { initContent, getContent } from '../content.js';
+import { initContent, getContent, escapeHTML } from '../content.js';
 import { icons } from '../icons.js';
 import { optimizedImage, attachAllImages } from '../optimized-image.js';
 import { renderHeader, renderFooter, renderWhatsAppButton } from '../shared-ui.js';
@@ -12,7 +12,8 @@ function renderHeroSection() {
     hero.backgroundImage,
     'Hero background',
     'w-full h-full object-cover',
-    'w-full h-full'
+    'w-full h-full',
+    { eager: true }
   );
 
   return `
@@ -27,18 +28,18 @@ function renderHeroSection() {
     <div class="container mx-auto px-4 z-20 relative h-full flex items-center">
       <div class="w-full lg:w-2/3 pt-12 md:pt-16 lg:pt-0 text-white text-center md:text-left">
         <div class="inline-block px-4 py-1.5 bg-accent-500 text-white text-[10px] md:text-xs font-bold tracking-wider uppercase mb-6 rounded shadow-lg transform -skew-x-12">
-          <span class="block transform skew-x-12">Authorized IT Partner Since 2018</span>
+          <span class="block transform skew-x-12">${escapeHTML(hero.badge || 'Authorized IT Partner Since 2018')}</span>
         </div>
         <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-heading font-bold leading-[1.2] md:leading-[1.1] mb-6 drop-shadow-md">
-          ${hero.titleLine1} <br class="hidden md:block"/>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">${hero.titleLine2}</span>
+          ${escapeHTML(hero.titleLine1)} <br class="hidden md:block"/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">${escapeHTML(hero.titleLine2)}</span>
         </h1>
         <p class="text-base md:text-xl text-gray-100 mb-8 leading-relaxed max-w-xl font-light border-l-0 md:border-l-4 border-accent-500 pl-0 md:pl-6 mx-auto md:mx-0 drop-shadow-sm">
-          ${hero.subtitle}
+          ${escapeHTML(hero.subtitle)}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <button id="hero-explore-btn" class="px-8 py-4 bg-accent-500 text-white font-bold rounded shadow-lg hover:bg-accent-600 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 w-full sm:w-auto">
-            ${hero.buttonText} ${icons.ArrowRight(18)}
+            ${escapeHTML(hero.buttonText)} ${icons.ArrowRight(18)}
           </button>
           <button id="hero-quote-btn" class="px-8 py-4 bg-white/10 text-white backdrop-blur-md font-semibold rounded shadow-md border border-white/30 hover:bg-white hover:text-brand-900 transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
             Request Quote
@@ -46,18 +47,11 @@ function renderHeroSection() {
         </div>
         <!-- Feature badges -->
         <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 text-sm font-medium text-gray-200">
+          ${(hero.featureBadges || ['100% Genuine Hardware', 'Banking Sector Partner', 'Fast Local Logistics']).map(badge => `
           <div class="flex items-center gap-2 justify-center md:justify-start">
             ${icons.CheckCircle2(16, 'text-accent-400 flex-shrink-0')}
-            <span>100% Genuine Hardware</span>
-          </div>
-          <div class="flex items-center gap-2 justify-center md:justify-start">
-            ${icons.CheckCircle2(16, 'text-accent-400 flex-shrink-0')}
-            <span>Banking Sector Partner</span>
-          </div>
-          <div class="flex items-center gap-2 justify-center md:justify-start">
-            ${icons.CheckCircle2(16, 'text-accent-400 flex-shrink-0')}
-            <span>Fast Local Logistics</span>
-          </div>
+            <span>${escapeHTML(badge)}</span>
+          </div>`).join('')}
         </div>
       </div>
     </div>
@@ -69,15 +63,15 @@ function renderFeaturesSection() {
   const content = getContent();
   const featureIcons = [icons.ShieldCheck, icons.Building2, icons.PackageCheck, icons.Truck];
 
-  const cards = content.features.items.map((item, i) => {
+  const cards = ((content.features && content.features.items) || []).map((item, i) => {
     const iconFn = featureIcons[i] || featureIcons[0];
     return `
       <div class="bg-white p-6 md:p-8 rounded shadow-premium border-b-4 border-transparent hover:border-accent-500 transition-all duration-300 group">
         <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-50 rounded-full flex items-center justify-center mb-5 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300">
           ${iconFn(28)}
         </div>
-        <h3 class="text-lg font-heading font-bold text-gray-900 mb-2">${item.title}</h3>
-        <p class="text-gray-600 text-sm leading-relaxed">${item.desc}</p>
+        <h3 class="text-lg font-heading font-bold text-gray-900 mb-2">${escapeHTML(item.title)}</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">${escapeHTML(item.desc)}</p>
       </div>`;
   }).join('');
 
@@ -95,13 +89,13 @@ function renderFeaturesSection() {
 function renderProductsSection() {
   const content = getContent();
   const warehouseBg = optimizedImage(
-    'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1920&q=80',
+    'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=70',
     'Warehouse background',
     'w-full h-full object-cover',
     'w-full h-full absolute inset-0'
   );
 
-  const productCards = content.products.map((product) => {
+  const productCards = (content.products || []).map((product) => {
     const prodImg = optimizedImage(
       product.image,
       product.title,
@@ -119,12 +113,12 @@ function renderProductsSection() {
             </a>
           </div>
           <span class="absolute top-3 left-3 px-3 py-1 bg-accent-500 text-white text-xs font-bold rounded uppercase tracking-wide">
-            ${product.category}
+            ${escapeHTML(product.category)}
           </span>
         </div>
         <div class="p-6">
-          <h3 class="text-xl font-heading font-bold text-gray-900 mb-2">${product.title}</h3>
-          <p class="text-gray-600 text-sm leading-relaxed mb-4">${product.description}</p>
+          <h3 class="text-xl font-heading font-bold text-gray-900 mb-2">${escapeHTML(product.title)}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed mb-4">${escapeHTML(product.description)}</p>
           <a href="product.html?id=${product.id}" class="inline-flex items-center gap-1 text-brand-600 font-semibold text-sm hover:text-brand-800 transition-colors">
             Learn More ${icons.ArrowRight(16)}
           </a>
@@ -162,7 +156,7 @@ function renderProductsSection() {
 function renderIndustriesSection() {
   const content = getContent();
 
-  const industryCards = content.industries.map((item) => {
+  const industryCards = (content.industries || []).map((item) => {
     const indImg = optimizedImage(
       item.image,
       item.title,
@@ -176,8 +170,8 @@ function renderIndustriesSection() {
         <div class="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/60 to-transparent z-10"></div>
         <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-20">
           <div class="w-12 h-1 bg-accent-500 mb-4 group-hover:w-20 transition-all duration-300"></div>
-          <h3 class="text-xl md:text-2xl font-heading font-bold text-white mb-2">${item.title}</h3>
-          <p class="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-2">${item.description}</p>
+          <h3 class="text-xl md:text-2xl font-heading font-bold text-white mb-2">${escapeHTML(item.title)}</h3>
+          <p class="text-gray-200 text-sm leading-relaxed mb-4 line-clamp-2">${escapeHTML(item.description)}</p>
           <span class="inline-flex items-center gap-1 text-accent-400 font-semibold text-sm group-hover:gap-3 transition-all duration-300">
             Explore More ${icons.ArrowRight(16)}
           </span>
@@ -204,15 +198,15 @@ function renderIndustriesSection() {
 function renderStatsSection() {
   const content = getContent();
 
-  const statItems = content.stats.items.map((item) => `
+  const statItems = ((content.stats && content.stats.items) || []).map((item) => `
     <div class="px-4 py-2">
-      <div class="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-2">${item.value}</div>
-      <div class="text-xs md:text-sm uppercase tracking-widest text-gray-300 font-medium">${item.label}</div>
+      <div class="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-2">${escapeHTML(item.value)}</div>
+      <div class="text-xs md:text-sm uppercase tracking-widest text-gray-200 font-medium">${escapeHTML(item.label)}</div>
     </div>
   `).join('');
 
   return `
-  <section class="py-16 md:py-20 bg-brand-900 text-white relative md:bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80')">
+  <section class="py-16 md:py-20 bg-brand-900 text-white relative md:bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=70')">
     <div class="absolute inset-0 bg-brand-900/90"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-8 text-center md:divide-x md:divide-white/10">
@@ -240,7 +234,7 @@ function renderAboutSection() {
     'w-full h-64 rounded-lg'
   );
 
-  const checkItems = [
+  const checkItems = about.checkItems || [
     'Authorized OEM Partner',
     'Trusted Banking Supplier',
     'East Godavari Specialist',
@@ -254,7 +248,7 @@ function renderAboutSection() {
       <div class="w-6 h-6 bg-accent-500/10 rounded-full flex items-center justify-center flex-shrink-0">
         ${icons.Check(14, 'text-accent-600')}
       </div>
-      <span class="text-gray-700 text-sm font-medium">${item}</span>
+      <span class="text-gray-700 text-sm font-medium">${escapeHTML(item)}</span>
     </div>
   `).join('');
 
@@ -274,16 +268,16 @@ function renderAboutSection() {
           </div>
           <!-- Floating experience card -->
           <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-brand-900 text-white px-8 py-4 rounded-lg shadow-xl text-center z-10">
-            <div class="text-3xl md:text-4xl font-heading font-bold text-accent-400">${about.yearsExperience}</div>
-            <div class="text-xs uppercase tracking-widest text-gray-300 font-medium">Years of Experience</div>
+            <div class="text-3xl md:text-4xl font-heading font-bold text-accent-400">${escapeHTML(about.yearsExperience)}</div>
+            <div class="text-xs uppercase tracking-widest text-gray-200 font-medium">Years of Experience</div>
           </div>
         </div>
         <!-- Right: Content -->
         <div>
           <span class="text-brand-600 font-bold uppercase tracking-widest text-sm mb-2 block">About ReliaIT</span>
-          <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-6">${about.title}</h2>
-          <p class="text-gray-600 leading-relaxed mb-4">${about.description1}</p>
-          <p class="text-gray-600 leading-relaxed mb-8">${about.description2}</p>
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-6">${escapeHTML(about.title)}</h2>
+          <p class="text-gray-600 leading-relaxed mb-4">${escapeHTML(about.description1)}</p>
+          <p class="text-gray-600 leading-relaxed mb-8">${escapeHTML(about.description2)}</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             ${checkList}
           </div>
@@ -348,7 +342,7 @@ function wireContactForm() {
     }
 
     if (phoneField.value.trim()) {
-      const phoneDigits = phoneField.value.replace(/[\s+]/g, '');
+      const phoneDigits = phoneField.value.replace(/[\s+()\-]/g, '');
       if (!/^\d{10,15}$/.test(phoneDigits)) {
         phoneField.classList.add('invalid', 'border-red-500');
         phoneField.classList.remove('border-gray-300');
@@ -464,7 +458,7 @@ function renderContactSectionHTML() {
           <!-- Left: Contact Info -->
           <div class="lg:col-span-2 bg-brand-900 p-8 md:p-10 text-white">
             <h3 class="text-xl font-heading font-bold mb-6">Contact Information</h3>
-            <p class="text-gray-300 text-sm mb-8 leading-relaxed">Reach out for product inquiries, bulk order quotes, or partnership discussions.</p>
+            <p class="text-gray-200 text-sm mb-8 leading-relaxed">Reach out for product inquiries, bulk order quotes, or partnership discussions.</p>
             <div class="space-y-6">
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -472,7 +466,7 @@ function renderContactSectionHTML() {
                 </div>
                 <div>
                   <div class="text-xs uppercase tracking-wider text-gray-400 mb-1">Phone</div>
-                  <a href="tel:${general.phone.replace(/\s/g, '')}" class="text-white hover:text-accent-400 transition-colors font-medium">${general.phone}</a>
+                  <a href="tel:${escapeHTML(general.phone.replace(/\s/g, ''))}" class="text-white hover:text-accent-400 transition-colors font-medium">${escapeHTML(general.phone)}</a>
                 </div>
               </div>
               <div class="flex items-start gap-4">
@@ -481,7 +475,7 @@ function renderContactSectionHTML() {
                 </div>
                 <div>
                   <div class="text-xs uppercase tracking-wider text-gray-400 mb-1">Email</div>
-                  <a href="mailto:${general.email}" class="text-white hover:text-accent-400 transition-colors font-medium">${general.email}</a>
+                  <a href="mailto:${escapeHTML(general.email)}" class="text-white hover:text-accent-400 transition-colors font-medium">${escapeHTML(general.email)}</a>
                 </div>
               </div>
               <div class="flex items-start gap-4">
@@ -490,7 +484,7 @@ function renderContactSectionHTML() {
                 </div>
                 <div>
                   <div class="text-xs uppercase tracking-wider text-gray-400 mb-1">Address</div>
-                  <p class="text-white font-medium leading-relaxed">${general.address}</p>
+                  <p class="text-white font-medium leading-relaxed">${escapeHTML(general.address)}</p>
                 </div>
               </div>
             </div>
@@ -517,26 +511,29 @@ function renderContactSectionHTML() {
                   <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1.5">Email Address *</label>
                   <input type="email" id="contact-email" name="email" required
                     pattern="[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}"
+                    aria-describedby="contact-email-error"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm peer"
                     placeholder="you@company.com" />
-                  <p class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1">Please enter a valid email address</p>
+                  <p id="contact-email-error" class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1" role="alert">Please enter a valid email address</p>
                 </div>
                 <div>
                   <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
                   <input type="tel" id="contact-phone" name="phone"
-                    pattern="[+]?[0-9\\s]{10,15}"
+                    pattern="[+]?[0-9\\s(){}-]{10,15}"
                     maxlength="15"
+                    aria-describedby="contact-phone-error"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm peer"
                     placeholder="+91 XXXXX XXXXX" />
-                  <p class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1">Please enter a valid phone number (10-15 digits)</p>
+                  <p id="contact-phone-error" class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1" role="alert">Please enter a valid phone number (10-15 digits)</p>
                 </div>
               </div>
               <div>
                 <label for="contact-message" class="block text-sm font-medium text-gray-700 mb-1.5">Message *</label>
                 <textarea id="contact-message" name="message" required rows="4" minlength="10"
+                  aria-describedby="contact-message-error"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm resize-none peer"
                   placeholder="Tell us about your requirements..."></textarea>
-                <p class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1">Message must be at least 10 characters</p>
+                <p id="contact-message-error" class="hidden peer-[.invalid]:block text-red-500 text-xs mt-1" role="alert">Message must be at least 10 characters</p>
               </div>
               <div id="contact-status" class="hidden text-sm font-medium"></div>
               <button type="submit" id="contact-submit-btn"
@@ -597,16 +594,19 @@ async function init() {
   if (window.location.hash) {
     const targetId = window.location.hash.substring(1);
     let attempts = 0;
+    let rafId;
     const tryScroll = () => {
       const el = document.getElementById(targetId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
       } else if (attempts < 20) {
         attempts++;
-        requestAnimationFrame(tryScroll);
+        rafId = requestAnimationFrame(tryScroll);
       }
     };
-    requestAnimationFrame(tryScroll);
+    rafId = requestAnimationFrame(tryScroll);
+    // Cancel scroll polling if page unloads
+    window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId), { once: true });
   }
 }
 

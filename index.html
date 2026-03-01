@@ -3,32 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0F172A">
+    <link rel="canonical" href="https://reliaitinfo.in/" />
 
     <!-- Primary Meta Tags -->
     <title>ReliaIT | Reliable B2B IT & Office Supply Solutions</title>
-    <meta name="title" content="ReliaIT | Reliable B2B IT & Office Supply Solutions">
     <meta name="description" content="Your trusted B2B partner for IT hardware, office stationery, and enterprise networking solutions in East Godavari.">
     <meta name="keywords" content="IT Solutions, Office Stationery, Computer Accessories, B2B Supplies, Rajahmundry, ReliaIT">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://reliait.net/">
+    <meta property="og:url" content="https://reliaitinfo.in/">
     <meta property="og:title" content="ReliaIT | Reliable B2B IT & Office Supply Solutions">
     <meta property="og:description" content="Your trusted B2B partner for IT hardware, office stationery, and enterprise networking solutions.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://reliait.net/">
-    <meta property="twitter:title" content="ReliaIT | Reliable B2B IT & Office Supply Solutions">
-    <meta property="twitter:description" content="Your trusted B2B partner for IT hardware, office stationery, and enterprise networking solutions.">
-    <meta property="twitter:image" content="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://reliaitinfo.in/">
+    <meta name="twitter:title" content="ReliaIT | Reliable B2B IT & Office Supply Solutions">
+    <meta name="twitter:description" content="Your trusted B2B partner for IT hardware, office stationery, and enterprise networking solutions.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop">
+
+    <!-- Preconnect hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+    <!-- Preload hero image for fast LCP -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=1200&auto=format&fit=crop" fetchpriority="high">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "ReliaIT",
+      "description": "Your trusted B2B partner for IT hardware, office stationery, and enterprise networking solutions in East Godavari.",
+      "url": "https://reliaitinfo.in",
+      "telephone": "+91 98765 43210",
+      "email": "info@reliait.net",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Main Road",
+        "addressLocality": "Rajahmundry",
+        "addressRegion": "Andhra Pradesh",
+        "postalCode": "533101",
+        "addressCountry": "IN"
+      },
+      "image": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop",
+      "priceRange": "$$",
+      "openingHours": "Mo-Sa 09:00-18:00"
+    }
+    </script>
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/tailwind-config.js"></script>
     <script type="importmap">
@@ -47,8 +81,15 @@
     <main id="app"></main>
     <footer id="main-footer"></footer>
     <div id="whatsapp-btn"></div>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script>emailjs.init('N-swIPb5qzyofe2GO');</script>
     <script type="module" src="js/pages/home.js"></script>
+    <!-- Defer EmailJS until after page renders -->
+    <script>
+      window.addEventListener('load', function() {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+        s.onload = function() { emailjs.init('N-swIPb5qzyofe2GO'); };
+        document.body.appendChild(s);
+      });
+    </script>
   </body>
 </html>

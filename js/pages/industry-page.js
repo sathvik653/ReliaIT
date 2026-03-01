@@ -1,5 +1,5 @@
 // Industry detail page - ported from pages/IndustryDetail.tsx
-import { initContent, getContent } from '../content.js';
+import { initContent, getContent, escapeHTML } from '../content.js';
 import { icons } from '../icons.js';
 import { optimizedImage, attachAllImages } from '../optimized-image.js';
 import { renderHeader, renderFooter, renderWhatsAppButton } from '../shared-ui.js';
@@ -49,6 +49,9 @@ async function init() {
     let ogUrl = document.querySelector('meta[property="og:url"]');
     if (!ogUrl) { ogUrl = document.createElement('meta'); ogUrl.setAttribute('property', 'og:url'); document.head.appendChild(ogUrl); }
     ogUrl.setAttribute('content', window.location.href);
+    // Update canonical URL to include industry ID
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', `https://reliaitinfo.in/industry.html?id=${id}`);
   }
 
   if (!industry) {
@@ -69,7 +72,7 @@ async function init() {
       <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-600">
         ${icons.CheckCircle2(20)}
       </div>
-      <span class="font-medium text-gray-800">${feature}</span>
+      <span class="font-medium text-gray-800">${escapeHTML(feature)}</span>
     </div>
   `).join('');
 
@@ -91,7 +94,7 @@ async function init() {
             </div>
             <span class="text-yellow-400 font-bold uppercase tracking-widest text-sm">Industry Focus</span>
           </div>
-          <h1 class="text-4xl md:text-6xl font-heading font-bold">${industry.title} Solutions</h1>
+          <h1 class="text-4xl md:text-6xl font-heading font-bold">${escapeHTML(industry.title)} Solutions</h1>
         </div>
       </div>
 
@@ -100,7 +103,7 @@ async function init() {
         <div class="max-w-4xl mx-auto">
           <div class="bg-white -mt-32 relative z-20 p-8 md:p-12 rounded-xl shadow-premium border-t-4 border-yellow-500">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Overview</h2>
-            <p class="text-lg text-gray-600 mb-8 leading-relaxed">${industry.longDescription || industry.description}</p>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">${escapeHTML(industry.longDescription || industry.description)}</p>
 
             <h3 class="text-xl font-bold text-gray-900 mb-6">Our Specialized Services</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -113,9 +116,9 @@ async function init() {
       <!-- CTA -->
       <div class="bg-gray-50 py-16">
         <div class="container mx-auto px-4 text-center">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to upgrade your ${industry.title} infrastructure?</h2>
-          <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Contact our dedicated ${industry.title} procurement specialists for a consultation and customized quote.</p>
-          <a href="#contact" class="inline-block px-8 py-3 bg-brand-600 text-white font-bold rounded shadow-lg hover:bg-brand-700 transition-colors">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to upgrade your ${escapeHTML(industry.title)} infrastructure?</h2>
+          <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Contact our dedicated ${escapeHTML(industry.title)} procurement specialists for a consultation and customized quote.</p>
+          <a href="#contact-section" class="inline-block px-8 py-3 bg-brand-600 text-white font-bold rounded shadow-lg hover:bg-brand-700 transition-colors" onclick="event.preventDefault(); document.getElementById('contact-section')?.scrollIntoView({behavior:'smooth'})">
             Contact Specialist
           </a>
         </div>

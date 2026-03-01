@@ -1,5 +1,5 @@
 // Product detail page - ported from pages/ProductDetail.tsx
-import { initContent, getContent } from '../content.js';
+import { initContent, getContent, escapeHTML } from '../content.js';
 import { icons } from '../icons.js';
 import { optimizedImage, attachAllImages } from '../optimized-image.js';
 import { renderHeader, renderFooter, renderWhatsAppButton } from '../shared-ui.js';
@@ -43,6 +43,9 @@ async function init() {
     let ogUrl = document.querySelector('meta[property="og:url"]');
     if (!ogUrl) { ogUrl = document.createElement('meta'); ogUrl.setAttribute('property', 'og:url'); document.head.appendChild(ogUrl); }
     ogUrl.setAttribute('content', window.location.href);
+    // Update canonical URL to include product ID
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', `https://reliaitinfo.in/product.html?id=${id}`);
   }
 
   if (!product) {
@@ -62,7 +65,7 @@ async function init() {
       const itemsHtml = section.items.map(item => `
         <li class="flex items-start gap-3 text-gray-600 text-sm">
           <span class="w-1.5 h-1.5 rounded-full bg-accent-500 mt-2 flex-shrink-0"></span>
-          <span class="leading-relaxed">${item}</span>
+          <span class="leading-relaxed">${escapeHTML(item)}</span>
         </li>
       `).join('');
 
@@ -71,7 +74,7 @@ async function init() {
           <div class="h-56 relative overflow-hidden">
             ${sectionImg.html}
             <div class="absolute inset-0 bg-gradient-to-t from-brand-900/80 to-transparent opacity-80 z-10"></div>
-            <h3 class="absolute bottom-4 left-4 text-white font-heading font-bold text-lg drop-shadow-md pr-4 leading-tight z-20">${section.title}</h3>
+            <h3 class="absolute bottom-4 left-4 text-white font-heading font-bold text-lg drop-shadow-md pr-4 leading-tight z-20">${escapeHTML(section.title)}</h3>
           </div>
           <div class="p-6 flex-1 bg-white">
             <ul class="space-y-3">${itemsHtml}</ul>
@@ -85,7 +88,7 @@ async function init() {
     const featuresHtml = product.features.map(feature => `
       <div class="flex items-start gap-3 bg-white p-4 rounded shadow-sm border border-gray-100">
         ${icons.CheckCircle2(18, 'text-accent-500 mt-0.5 flex-shrink-0')}
-        <span class="text-gray-700 font-medium text-sm">${feature}</span>
+        <span class="text-gray-700 font-medium text-sm">${escapeHTML(feature)}</span>
       </div>
     `).join('');
 
@@ -109,9 +112,9 @@ async function init() {
             ${icons.ArrowLeft(16, 'mr-2')} Back to Solutions
           </a>
           <div class="flex items-center gap-3 mb-2">
-            <span class="bg-accent-500 text-white text-xs font-bold px-3 py-1 rounded uppercase tracking-wider">${product.category}</span>
+            <span class="bg-accent-500 text-white text-xs font-bold px-3 py-1 rounded uppercase tracking-wider">${escapeHTML(product.category)}</span>
           </div>
-          <h1 class="text-3xl md:text-5xl font-heading font-bold">${product.title}</h1>
+          <h1 class="text-3xl md:text-5xl font-heading font-bold">${escapeHTML(product.title)}</h1>
         </div>
       </div>
 
@@ -119,8 +122,8 @@ async function init() {
       <div class="container mx-auto px-4 py-16">
         <div class="max-w-6xl mx-auto">
           <div class="prose max-w-none text-gray-600 leading-relaxed mb-10">
-            <p class="text-lg font-medium text-gray-800 mb-6 border-l-4 border-accent-500 pl-4">${product.description}</p>
-            <p class="mb-6">${product.longDescription || ''}</p>
+            <p class="text-lg font-medium text-gray-800 mb-6 border-l-4 border-accent-500 pl-4">${escapeHTML(product.description)}</p>
+            <p class="mb-6">${escapeHTML(product.longDescription || '')}</p>
           </div>
           ${contentHtml}
         </div>
