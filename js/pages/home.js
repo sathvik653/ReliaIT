@@ -420,49 +420,43 @@ function wireContactForm() {
 function renderTestimonialsSection() {
   const testimonials = [
     {
-      name: "Ramesh Babu Kothapalli",
-      role: "Branch Manager",
-      org: "State Bank of India, Rajahmundry",
+      name: "Ramesh Babu K.",
+      role: "Branch Manager, Banking Sector",
       text: "We have been procuring all our IT consumables from ReliaIT for the past 3 years. Toner delivery is always on time, even on urgent basis. Very reliable and the billing is always GST compliant. Best vendor we have worked with in East Godavari.",
       rating: 5,
       initials: "RK"
     },
     {
       name: "P. Lakshmi Narasimha Rao",
-      role: "Principal",
-      org: "Sri Venkateswara EM High School, Kakinada",
+      role: "School Principal, Kakinada",
       text: "They set up our entire computer lab with 30 desktops, networking, and projectors. The quality of hardware is genuine and they even helped us with AMC. Our students are very happy with the new lab. Thank you ReliaIT team!",
       rating: 5,
       initials: "PLR"
     },
     {
       name: "K. Suresh Kumar",
-      role: "District Procurement Officer",
-      org: "Revenue Department, East Godavari",
+      role: "Govt. Procurement Officer",
       text: "ReliaIT is our go-to GeM registered supplier for all office stationery and computer peripherals. Their tender documentation is always perfect and delivery happens well before the deadline. Very professional team.",
       rating: 5,
       initials: "KS"
     },
     {
-      name: "Srinivasa Rao Mandava",
-      role: "Owner",
-      org: "Mandava Enterprises, Rajahmundry",
+      name: "Srinivasa Rao M.",
+      role: "Retail Business Owner, Rajahmundry",
       text: "I was struggling to find a reliable supplier for POS machines and billing rolls for my 3 retail shops. ReliaIT not only supplied everything but also helped with installation. Their rates are very competitive compared to Hyderabad dealers.",
       rating: 5,
       initials: "SM"
     },
     {
       name: "Dr. Vijaya Kumari B.",
-      role: "Administrative Officer",
-      org: "Andhra Bank (Now Union Bank), Amalapuram",
+      role: "Administrative Officer, Banking Sector",
       text: "From printer cartridges to complete desktop setups, ReliaIT handles all our IT needs. What I appreciate most is their same-day delivery within East Godavari. No other vendor gives this kind of service in our area.",
       rating: 4,
       initials: "VK"
     },
     {
       name: "Mohammed Irfan",
-      role: "IT Coordinator",
-      org: "Govt. Degree College, Rajamahendravaram",
+      role: "IT Coordinator, Education Sector",
       text: "We ordered bulk computer stationery for our semester exams — answer booklets, continuous paper, and printer ribbons. Everything was delivered in 2 days flat. Quality was excellent and rates were within our budget. Highly recommended!",
       rating: 5,
       initials: "MI"
@@ -485,7 +479,6 @@ function renderTestimonialsSection() {
         <div>
           <div class="font-bold text-gray-900 text-sm">${escapeHTML(t.name)}</div>
           <div class="text-xs text-gray-500">${escapeHTML(t.role)}</div>
-          <div class="text-xs text-brand-600 font-medium">${escapeHTML(t.org)}</div>
         </div>
       </div>
     </div>
