@@ -10,6 +10,7 @@ let formData = null;   // Deep clone of content for editing
 let activeTab = 'general';
 let saveStatus = 'idle'; // idle | saving | saved | error
 let _authUnsubscribe = null;
+let _globalListenersAttached = false;
 
 // ── Helpers ─────────────────────────────────────────────────────────
 function deepClone(obj) {
@@ -411,7 +412,7 @@ function renderProductTab(productId) {
       </div>
       ${textField('Card Title', sec.title || '', `data-section="products" data-index="${pIdx}" data-sub-array="sections" data-sub-index="${si}" data-field="title"`)}
       ${textField('Image URL', sec.image || '', `data-section="products" data-index="${pIdx}" data-sub-array="sections" data-sub-index="${si}" data-field="image"`)}
-      ${sec.image ? `<img src="${escapeHTML(sec.image)}" alt="Preview" class="w-32 h-20 object-cover rounded-lg border border-gray-200" onerror="this.style.display='none'" />` : ''}
+      ${sec.image ? `<img src="${escapeHTML(sec.image)}" alt="Preview" class="admin-preview-img w-32 h-20 object-cover rounded-lg border border-gray-200" />` : ''}
       ${textareaField('List Items (one per line)', itemsText, `data-section="products" data-index="${pIdx}" data-sub-array="sections" data-sub-index="${si}" data-field="items" data-type="lines"`, 4)}
     </div>`;
   });
@@ -442,6 +443,7 @@ function renderTabContent() {
 function renderDashboard() {
   const app = document.getElementById('app') || document.body;
   app.innerHTML = `
+  <a href="#tab-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-brand-900 focus:text-white focus:rounded focus:text-sm focus:font-bold">Skip to content</a>
   <div class="min-h-screen bg-slate-100 flex flex-col md:flex-row font-sans">
     ${renderSidebar()}
     <main class="flex-1 p-4 md:p-10 overflow-y-auto">
@@ -482,6 +484,10 @@ function refreshTabContent() {
   if (container) {
     container.innerHTML = renderTabContent();
     attachTabContentListeners();
+    // Safely hide broken preview images without inline onerror
+    container.querySelectorAll('.admin-preview-img').forEach(img => {
+      img.onerror = () => { img.style.display = 'none'; };
+    });
   }
   // Update title
   const titleEl = document.getElementById('tab-title');
@@ -640,17 +646,8 @@ function handleTabContentChange(e) {
 
 // ── Attach listeners ────────────────────────────────────────────────
 function attachTabContentListeners() {
-  const container = document.getElementById('tab-content');
-  if (!container) return;
-
-  // Remove old listeners by replacing node (simple approach)
-  // Actually, since we replace innerHTML, old listeners on children are gone.
-  // We use delegation on #tab-content, but we need to avoid stacking.
-  // We'll use a flag approach with named functions.
-
-  // Remove previous delegated listeners by cloning
-  const oldContainer = container;
-  // Instead, we set up listeners once on a persistent wrapper. See attachGlobalListeners.
+  // All event listeners are delegated via attachGlobalListeners().
+  // This function is kept as a no-op hook for future per-render setup.
 }
 
 function toggleSidebar(open) {
@@ -667,6 +664,9 @@ function toggleSidebar(open) {
 }
 
 function attachGlobalListeners() {
+  if (_globalListenersAttached) return;
+  _globalListenersAttached = true;
+
   // Mobile sidebar toggle
   document.addEventListener('click', (e) => {
     if (e.target.closest('#sidebar-open-btn')) {

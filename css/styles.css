@@ -25,3 +25,28 @@ html { scroll-behavior: smooth; }
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* High-contrast focus for elements on dark backgrounds */
+footer *:focus-visible,
+.bg-brand-900 *:focus-visible,
+.bg-brand-950 *:focus-visible {
+  outline-color: #FBBF24;
+}
+
+/* Fix hero section height on landscape mobile */
+@media (orientation: landscape) and (max-height: 500px) {
+  #home {
+    min-height: auto !important;
+    height: auto !important;
+  }
+}
+
+/* Respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

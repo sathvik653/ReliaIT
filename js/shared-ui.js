@@ -2,7 +2,7 @@
 
 import { icons } from './icons.js';
 import { renderLogo } from './logo.js';
-import { getContent } from './content.js';
+import { getContent, escapeHTML } from './content.js';
 import { isAuthenticated, logout } from './auth.js';
 
 // ---------------------------------------------------------------------------
@@ -68,9 +68,15 @@ export function renderHeader() {
     href: link.url
   }));
 
+  const resourceChildren = [
+    { label: 'Blog', href: 'blog-listing.html' },
+    { label: 'IT Glossary', href: 'glossary-listing.html' }
+  ];
+
   const navItems = [
     { label: 'Home', href: 'index.html' },
     { label: 'Services', children: serviceChildren },
+    { label: 'Resources', children: resourceChildren },
     { label: 'About', href: 'index.html#about' },
     { label: 'Contact', href: 'index.html#contact' }
   ];
@@ -85,11 +91,11 @@ export function renderHeader() {
           <div class="flex items-center space-x-6">
             <a href="tel:${phoneClean}" class="flex items-center gap-2 hover:text-accent-400 transition-colors">
               ${icons.Phone(14)}
-              <span>${content.general.phone || ''}</span>
+              <span>${escapeHTML(content.general.phone || '')}</span>
             </a>
-            <a href="mailto:${content.general.email || ''}" class="flex items-center gap-2 hover:text-accent-400 transition-colors">
+            <a href="mailto:${escapeHTML(content.general.email || '')}" class="flex items-center gap-2 hover:text-accent-400 transition-colors">
               ${icons.Mail(14)}
-              <span>${content.general.email || ''}</span>
+              <span>${escapeHTML(content.general.email || '')}</span>
             </a>
           </div>
           <div class="flex items-center gap-4">
@@ -310,9 +316,11 @@ export function renderHeader() {
       if (mobileOpen) {
         mobileMenu.classList.remove('hidden');
         mobileMenuBtn.innerHTML = icons.X(28);
+        document.body.style.overflow = 'hidden';
       } else {
         mobileMenu.classList.add('hidden');
         mobileMenuBtn.innerHTML = icons.Menu(28);
+        document.body.style.overflow = '';
       }
     });
   }
@@ -351,6 +359,7 @@ export function renderHeader() {
       if (mobileMenu && mobileOpen) {
         mobileOpen = false;
         mobileMenu.classList.add('hidden');
+        document.body.style.overflow = '';
         if (mobileMenuBtn) mobileMenuBtn.innerHTML = icons.Menu(28);
       }
     });
@@ -360,9 +369,9 @@ export function renderHeader() {
   if (authenticated) {
     const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
     if (mobileLogoutBtn) {
-      mobileLogoutBtn.addEventListener('click', (e) => {
+      mobileLogoutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        logout();
+        await logout();
         window.location.href = 'index.html';
       });
     }
@@ -401,7 +410,7 @@ export function renderFooter() {
   footer.innerHTML = `
     <footer class="bg-brand-900 text-gray-400 font-sans border-t border-brand-800">
       <div class="container mx-auto px-4 py-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
 
           <!-- About Widget -->
           <div>
@@ -409,7 +418,7 @@ export function renderFooter() {
               ${renderLogo('light', 32)}
             </div>
             <p class="text-sm leading-relaxed mb-6 text-gray-400">
-              ${content.footer.aboutText || ''}
+              ${escapeHTML(content.footer.aboutText || '')}
             </p>
             <div class="flex gap-4">
               ${content.general.facebook && content.general.facebook !== '#' ? `<a href="${content.general.facebook}" class="w-9 h-9 rounded bg-brand-800 flex items-center justify-center hover:bg-accent-500 hover:text-white transition-colors duration-300" aria-label="Facebook">${icons.Facebook(16)}</a>` : ''}
@@ -441,6 +450,26 @@ export function renderFooter() {
             </ul>
           </div>
 
+          <!-- Resources Widget -->
+          <div>
+            <h4 class="text-white font-heading font-bold text-lg mb-6 relative inline-block">
+              Resources
+              <span class="absolute -bottom-2 left-0 w-12 h-1 bg-accent-500 rounded-full"></span>
+            </h4>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="blog-listing.html" class="footer-nav-link hover:text-accent-500 transition-colors flex items-center gap-2 cursor-pointer" data-href="blog-listing.html">
+                  ${icons.ChevronRight(14, 'text-gray-600')} Blog & Guides
+                </a>
+              </li>
+              <li>
+                <a href="glossary-listing.html" class="footer-nav-link hover:text-accent-500 transition-colors flex items-center gap-2 cursor-pointer" data-href="glossary-listing.html">
+                  ${icons.ChevronRight(14, 'text-gray-600')} IT Glossary
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <!-- Contact Widget -->
           <div>
             <h4 class="text-white font-heading font-bold text-lg mb-6 relative inline-block">
@@ -450,15 +479,15 @@ export function renderFooter() {
             <ul class="space-y-4 text-sm">
               <li class="flex items-start gap-3">
                 ${icons.MapPin(18, 'text-accent-500 mt-1 flex-shrink-0')}
-                <span>${content.general.address || ''}</span>
+                <span>${escapeHTML(content.general.address || '')}</span>
               </li>
               <li class="flex items-center gap-3">
                 ${icons.Phone(18, 'text-accent-500 flex-shrink-0')}
-                <span>${content.general.phone || ''}</span>
+                <span>${escapeHTML(content.general.phone || '')}</span>
               </li>
               <li class="flex items-center gap-3">
                 ${icons.Mail(18, 'text-accent-500 flex-shrink-0')}
-                <span>${content.general.email || ''}</span>
+                <span>${escapeHTML(content.general.email || '')}</span>
               </li>
             </ul>
           </div>
