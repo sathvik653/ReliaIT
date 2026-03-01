@@ -1,9 +1,20 @@
 // Content manager singleton - ported from ContentContext.tsx
 import { db } from './firebase-init.js';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { defaultContent } from './data.js';
+import { defaultContent, products, industries } from './data.js';
 
 let _content = null;
+
+// Sanitize strings for safe innerHTML usage (prevents XSS from CMS data)
+export function escapeHTML(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 export async function initContent() {
   let firebaseData = null;
@@ -32,6 +43,10 @@ export async function initContent() {
       _content = defaultContent;
     }
   }
+
+  // Always use latest product/industry images from data.js to prevent stale/broken URLs
+  _content.products = products;
+  _content.industries = industries;
 
   return _content;
 }
